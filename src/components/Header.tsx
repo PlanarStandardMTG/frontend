@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
+import { API_BASE_URL } from '../types/Api'
 
 export function Header() {
   const [isHovered, setIsHovered] = useState<string | null>(null)
@@ -15,6 +16,21 @@ export function Header() {
     localStorage.removeItem('authToken')
     setIsLoggedIn(false)
     navigate('/auth')
+  }
+
+  const handleTestUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('authToken')
+      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      const data = await response.json()
+      console.log('User Info:', data)
+    } catch (error) {
+      console.error('Error fetching user info:', error)
+    }
   }
 
   return (
@@ -46,6 +62,22 @@ export function Header() {
                 }`}
               >
                 Dashboard
+              </button>
+            )}
+
+            {/* Test Button - Only show when logged in */}
+            {isLoggedIn && (
+              <button
+                onClick={handleTestUserInfo}
+                onMouseEnter={() => setIsHovered('test')}
+                onMouseLeave={() => setIsHovered(null)}
+                className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  isHovered === 'test'
+                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/50 scale-105'
+                    : 'bg-gray-700 text-gray-100 hover:text-white'
+                }`}
+              >
+                Test User Info
               </button>
             )}
 
