@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/useAuth'
-import { API_BASE_URL } from '../types/Api'
+import { useAuth } from '../../contexts/useAuth'
+import { API_BASE_URL } from '../../types/Api'
 import { FaTachometerAlt, FaUserCircle, FaSignOutAlt, FaSignInAlt, FaBars } from 'react-icons/fa'
+import DesktopButton from './DesktopButton'
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [hovered, setHovered] = useState<string | null>(null)
   const { isLoggedIn, setIsLoggedIn } = useAuth()
   const navigate = useNavigate()
 
@@ -30,20 +30,6 @@ export function Header() {
     }
   }
 
-  const desktopButton = (key: string, icon: JSX.Element, label: string, onClick: () => void, color?: string) => (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHovered(key)}
-      onMouseLeave={() => setHovered(null)}
-      className={`flex items-center justify-center gap-2 p-2 rounded-lg transition-all duration-200
-        ${hovered === key ? `bg-${color}-600 text-white scale-105 shadow-lg shadow-${color}-500/50` : 'bg-gray-700 text-gray-100 hover:text-white'}`}
-      title={label}
-    >
-      {icon}
-      <span className="hidden sm:inline">{label}</span>
-    </button>
-  )
-
   return (
     <header className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-gray-700 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,17 +46,29 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden sm:flex items-center gap-3">
-            {isLoggedIn && desktopButton('dashboard', <FaTachometerAlt />, 'Dashboard', () => navigate('/dashboard'), 'blue')}
-            {isLoggedIn && import.meta.env.MODE === 'development' &&
-              desktopButton('test', <FaUserCircle />, 'Test User Info', handleTestUserInfo, 'purple')
-            }
-            {desktopButton(
-              'auth',
-              isLoggedIn ? <FaSignOutAlt /> : <FaSignInAlt />,
-              isLoggedIn ? 'Logout' : 'Login',
-              isLoggedIn ? handleLogout : () => navigate('/auth'),
-              isLoggedIn ? 'red' : 'green'
+            {isLoggedIn && (
+              <DesktopButton 
+                icon={<FaTachometerAlt />} 
+                label="Dashboard" 
+                onClick={() => navigate('/dashboard')} 
+                color="blue" 
+              />
             )}
+            {isLoggedIn && import.meta.env.MODE === 'development' && (
+              <DesktopButton 
+                icon={<FaUserCircle />} 
+                label="Test User Info" 
+                onClick={handleTestUserInfo} 
+                color="purple" 
+              />
+            )}
+            
+            <DesktopButton 
+              icon={isLoggedIn ? <FaSignOutAlt /> : <FaSignInAlt />} 
+              label={isLoggedIn ? "Logout" : "Login"} 
+              onClick={isLoggedIn ? handleLogout : () => navigate('/auth')} 
+              color={isLoggedIn ? "red" : "green"} 
+            />
           </nav>
 
           {/* Mobile Menu Button */}
@@ -103,7 +101,14 @@ export function Header() {
               </button>
             )}
             <button
-              onClick={() => { isLoggedIn ? handleLogout() : navigate('/auth'); setMenuOpen(false) }}
+              onClick={() => { 
+                if (isLoggedIn) {
+                  handleLogout();
+                } else {
+                  navigate('/auth');
+                }
+                setMenuOpen(false);
+              }}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
                 isLoggedIn ? 'bg-red-900 text-red-100 hover:bg-red-700 hover:text-white' : 'border-2 border-gray-500 text-gray-100 hover:border-gray-300'
               }`}
