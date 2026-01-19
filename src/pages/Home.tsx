@@ -18,11 +18,13 @@ export function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <NavigationButton to="/dashboard">
-              Dashboard
-            </NavigationButton>
+            {import.meta.env.MODE === 'development' && (
+              <NavigationButton to="/dashboard" variant="secondary">
+                Dashboard
+              </NavigationButton>
+            )}
 
-            <NavigationButton to="/rules" variant="secondary">
+            <NavigationButton to="/rules">
               View Rules
             </NavigationButton>
           </div>

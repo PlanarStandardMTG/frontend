@@ -31,7 +31,7 @@ export function Dashboard() {
         <h1 className="text-4xl font-bold mb-4">
           {user ? `Welcome, ${user.username}` : "Dashboard"}
         </h1>
-        <p className="text-gray-300 mb-8">Welcome to your dashboard. This is a placeholder page.</p>
+        <p className="text-gray-300 mb-8">Welcome to your dashboard. THIS PAGE IS A WORK IN PROGRESS.</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">          
           <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
