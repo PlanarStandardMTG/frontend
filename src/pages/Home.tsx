@@ -10,7 +10,7 @@ export function Home() {
         {/* Hero */}
         <section className="max-w-6xl mx-auto px-6 py-24 text-center">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
-            PlanarStandard
+            Planar Standard
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
             A community-driven Magic: the Gathering format built around a smaller,
@@ -30,7 +30,7 @@ export function Home() {
           </div>
         </section>
 
-        {/* What is PlanarStandard */}
+        {/* What is Planar Standard */}
         <section className="max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-3 gap-8">
           <div className="bg-gray-900/75 backdrop-blur-md rounded-2xl p-6 shadow-2xl ring-1 ring-white/15 hover:ring-white/25 transition">
             <h3 className="text-xl font-semibold mb-3">Smaller Card Pool</h3>
@@ -60,7 +60,7 @@ export function Home() {
         {/* Community Statement */}
         <section className="max-w-4xl mx-auto px-6 pb-24 text-center">
           <p className="text-lg text-gray-300">
-            PlanarStandard exists to create fun, engaging Magic experiences.
+            Planar Standard exists to create fun, engaging Magic experiences.
             Everyone is welcome and preferences differ, the focus stays on
             playing great games and building a healthy, inclusive community.
           </p>
@@ -72,7 +72,7 @@ export function Home() {
             <h2 className="text-3xl font-bold mb-6">Join the Community</h2>
             <p className="text-gray-300 mb-8">
               Discuss decks, share feedback, and help shape the future of
-              PlanarStandard.
+              Planar Standard.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">

@@ -9,10 +9,10 @@ export function Rules() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-              PlanarStandard Rules
+              Planar Standard Rules
             </h1>
             <p className="text-lg text-gray-300 max-w-3xl">
-              PlanarStandard is a rotating Magic: the Gathering format built
+              Planar Standard is a rotating Magic: the Gathering format built
               around a smaller card pool.
             </p>
           </div>
@@ -21,7 +21,7 @@ export function Rules() {
             {/* Legal Sets */}
             <RuleCard title="Legal Sets">
               <p>
-                The following sets are currently legal in PlanarStandard:
+                The following sets are currently legal in Planar Standard:
               </p>
               <ul className="list-disc list-inside space-y-1 text-gray-200">
                 <li>Foundations</li>
@@ -42,7 +42,7 @@ export function Rules() {
             {/* Rotation */}
             <RuleCard title="Rotation Policy">
               <p>
-                PlanarStandard is intended to always feature the previous two
+                Planar Standard is intended to always feature the previous two
                 years of Universe Within sets.
               </p>
               <p>
@@ -55,7 +55,7 @@ export function Rules() {
             <RuleCard title="Browse Legal Cards">
               <p>
                 Use the Scryfall search below to explore all cards currently
-                legal in PlanarStandard.
+                legal in Planar Standard.
               </p>
               <a
                 href="https://scryfall.com/search?q=game%3Apaper+(set%3Aecl+or+set%3Aeoe+or+set%3Atdm+or+set%3Adft+or+set%3Afdn)+-name%3A%22Cori-steel+cutter%22&unique=cards&as=grid&order=color"
