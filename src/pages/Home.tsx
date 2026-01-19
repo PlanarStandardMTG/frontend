@@ -1,9 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import { BlindEternitiesBackground } from '../components/BlindEternitiesBackground';
+import { NavigationButton } from '../components/NavigationButton';
 
 export function Home() {
-  const navigate = useNavigate()
-
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
       <BlindEternitiesBackground />
@@ -20,12 +18,13 @@ export function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg transition-colors"
-            >
-              Get Started
-            </button>
+            <NavigationButton to="/dashboard">
+              Dashboard
+            </NavigationButton>
+
+            <NavigationButton to="/rules" variant="secondary">
+              View Rules
+            </NavigationButton>
           </div>
         </section>
 

@@ -5,6 +5,7 @@ import { Home } from './pages/Home'
 import { Dashboard } from './pages/Dashboard'
 import { Authentication } from './pages/Authentication'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { Rules } from './pages/Rules'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/auth" element={<Authentication />} />
+            <Route path="/rules" element={<Rules />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </MainLayout>
