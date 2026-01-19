@@ -66,7 +66,7 @@ export function Header() {
             )}
 
             {/* Test Button - Only show when logged in */}
-            {isLoggedIn && (
+            {isLoggedIn && import.meta.env.MODE === 'development' && (
               <button
                 onClick={handleTestUserInfo}
                 onMouseEnter={() => setIsHovered('test')}
