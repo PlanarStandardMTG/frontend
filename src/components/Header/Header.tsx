@@ -37,17 +37,16 @@ export function Header() {
           {/* Logo */}
           <div 
             className="flex-shrink-0 flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={handleTitleClick}
-          >
-            <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            onClick={handleTitleClick}>
+            <span className="text-2xl font-extrabold italic pr-1 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
               PLANAR
             </span>
             <img
               src="/PlanarStandardLogo.png"
               alt=""
-              className="h-10"
+              className="h-11"
             />
-            <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            <span className="text-2xl font-extrabold italic pr-1 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
               STANDARD
             </span>
           </div>
