@@ -1,4 +1,4 @@
-import { FaDiscord, FaReddit, FaRedditAlien } from 'react-icons/fa';
+import { FaDiscord, FaRedditAlien } from 'react-icons/fa';
 import { BlindEternitiesBackground } from '../components/BlindEternitiesBackground';
 import { NavigationButton } from '../components/NavigationButton';
 
