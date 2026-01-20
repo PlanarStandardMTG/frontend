@@ -1,3 +1,4 @@
+import { FaDiscord, FaReddit, FaRedditAlien } from 'react-icons/fa';
 import { BlindEternitiesBackground } from '../components/BlindEternitiesBackground';
 import { NavigationButton } from '../components/NavigationButton';
 
@@ -78,19 +79,19 @@ export function Home() {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <a
                 href="https://discord.gg/eeYH9XMCjT"
-                target="_blank"
                 rel="noreferrer"
-                className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 font-semibold rounded-lg transition-colors"
+                target="_blank"
+                className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 font-semibold rounded-lg transition-colors"
               >
-                Discord
+                <FaDiscord className="w-8 h-8" />
               </a>
               <a
                 href="https://www.reddit.com/r/planarMTG/"
                 target="_blank"
                 rel="noreferrer"
-                className="px-8 py-3 bg-orange-600 hover:bg-orange-700 font-semibold rounded-lg transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 bg-orange-600 hover:bg-orange-700 font-semibold rounded-lg transition-colors"
               >
-                Reddit
+                <FaRedditAlien className="w-8 h-8" />
               </a>
             </div>
           </div>
