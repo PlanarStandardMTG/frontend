@@ -5,7 +5,9 @@ import { Home } from './pages/Home'
 import { Dashboard } from './pages/Dashboard'
 import { Authentication } from './pages/Authentication'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { AdminRoute } from './components/AdminRoute'
 import { Rules } from './pages/Rules'
+import { AdminDashboard } from './pages/AdminDashboard'
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/auth" element={<Authentication />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="*" element={<Navigate to="/" replace />} />

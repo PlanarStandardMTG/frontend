@@ -3,4 +3,5 @@ export interface UserDTO {
     email: string;
     username: string;
     elo: number;
+    admin: boolean;
 }
