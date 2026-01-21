@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
 import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa'
+import { ChallongeConnection } from '../components/Challonge/ChallongeConnection'
 
 export function AccountSettings() {
   const { setIsLoggedIn } = useAuth()
@@ -21,6 +22,9 @@ export function AccountSettings() {
         </div>
 
         <div className="space-y-6">
+          {/* Challonge Integration */}
+          <ChallongeConnection />
+
           {/* Logout Section */}
           <div className="bg-gray-800/50 backdrop-blur-md rounded-lg p-6 border border-gray-700">
             <h2 className="text-2xl font-semibold mb-4">Session</h2>

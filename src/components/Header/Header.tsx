@@ -7,7 +7,7 @@ import DesktopButton from './DesktopButton'
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { isLoggedIn, setIsLoggedIn, isAdmin } = useAuth()
+  const { isLoggedIn, isAdmin } = useAuth()
   const navigate = useNavigate()
 
   const handleTitleClick = () => navigate('/')
