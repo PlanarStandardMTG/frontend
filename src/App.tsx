@@ -8,6 +8,8 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminRoute } from './components/AdminRoute'
 import { Rules } from './pages/Rules'
 import { AdminDashboard } from './pages/AdminDashboard'
+import { AccountSettings } from './pages/AccountSettings'
+import { ChallongeCallback } from './pages/ChallongeCallback'
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
             <Route path="/auth" element={<Authentication />} />
+            <Route path="/auth/challonge/callback" element={<ProtectedRoute><ChallongeCallback /></ProtectedRoute>} />
             <Route path="/rules" element={<Rules />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
