@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/useAuth'
 import { API_BASE_URL } from '../../types/Api'
-import { FaTachometerAlt, FaUserCircle, FaSignOutAlt, FaSignInAlt, FaBars, FaHome, FaCrown } from 'react-icons/fa'
+import { FaTachometerAlt, FaUserCircle, FaSignInAlt, FaBars, FaHome, FaCrown, FaCog } from 'react-icons/fa'
 import DesktopButton from './DesktopButton'
 
 export function Header() {
@@ -11,11 +11,6 @@ export function Header() {
   const navigate = useNavigate()
 
   const handleTitleClick = () => navigate('/')
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    setIsLoggedIn(false)
-    navigate('/auth')
-  }
 
   const handleTestUserInfo = async () => {
     try {
@@ -85,12 +80,21 @@ export function Header() {
               color="orange" 
             />
             
-            <DesktopButton 
-              icon={isLoggedIn ? <FaSignOutAlt /> : <FaSignInAlt />} 
-              label={isLoggedIn ? "Logout" : "Login"} 
-              onClick={isLoggedIn ? handleLogout : () => navigate('/auth')} 
-              color={isLoggedIn ? "red" : "green"} 
-            />
+            {isLoggedIn ? (
+              <DesktopButton 
+                icon={<FaCog />} 
+                label="Account" 
+                onClick={() => navigate('/account')} 
+                color="gray" 
+              />
+            ) : (
+              <DesktopButton 
+                icon={<FaSignInAlt />} 
+                label="Login" 
+                onClick={() => navigate('/auth')} 
+                color="green" 
+              />
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -147,21 +151,21 @@ export function Header() {
               <FaBars /> Rules
             </button>
 
-            <button
-              onClick={() => { 
-                if (isLoggedIn) {
-                  handleLogout();
-                } else {
-                  navigate('/auth');
-                }
-                setMenuOpen(false);
-              }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-                isLoggedIn ? 'bg-red-900 text-red-100 hover:bg-red-700 hover:text-white' : 'border-2 border-gray-500 text-gray-100 hover:border-gray-300'
-              }`}
-            >
-              {isLoggedIn ? <FaSignOutAlt /> : <FaSignInAlt />} {isLoggedIn ? 'Logout' : 'Login'}
-            </button>
+            {isLoggedIn ? (
+              <button
+                onClick={() => { navigate('/account'); setMenuOpen(false) }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-gray-600 hover:text-white"
+              >
+                <FaCog /> Account Settings
+              </button>
+            ) : (
+              <button
+                onClick={() => { navigate('/auth'); setMenuOpen(false) }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-gray-500 text-gray-100 hover:border-gray-300"
+              >
+                <FaSignInAlt /> Login
+              </button>
+            )}
           </div>
         </div>
       )}
