@@ -89,9 +89,12 @@ export const challongeApi = {
    * Disconnect Challonge account
    */
   async disconnect(): Promise<ChallongeDisconnectResponse> {
+    const token = localStorage.getItem('authToken')
     const response = await fetch(`${API_BASE_URL}/api/challonge/disconnect`, {
       method: 'DELETE',
-      headers: getAuthHeaders(),
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
     })
 
     if (!response.ok) {
