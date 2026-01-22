@@ -150,12 +150,12 @@ export function Tournaments() {
                   <div>
                     <h2 className="text-2xl font-bold text-green-400 mb-2 flex items-center gap-2">
                       <FaTrophy className="text-green-400" />
-                      My Active Tournaments
+                      My Tournaments
                     </h2>
                     <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {myActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>
@@ -170,7 +170,7 @@ export function Tournaments() {
                     <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {myCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>
@@ -188,7 +188,7 @@ export function Tournaments() {
                     <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {myActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export function Tournaments() {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {otherActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>
@@ -217,7 +217,7 @@ export function Tournaments() {
                     <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {myCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>
@@ -231,7 +231,7 @@ export function Tournaments() {
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {otherCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} />
+                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
                       ))}
                     </div>
                   </div>

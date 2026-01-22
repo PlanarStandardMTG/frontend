@@ -42,12 +42,13 @@ export function Header() {
                 color="blue" 
               />
             )}
-            {isAdmin && (
+            
+            {isLoggedIn && (
               <DesktopButton 
-                icon={<FaCrown />} 
-                label="Admin" 
-                onClick={() => navigate('/admin')} 
-                color="yellow" 
+                icon={<FaTrophy />} 
+                label="Tournaments" 
+                onClick={() => navigate('/tournaments')} 
+                color="purple" 
               />
             )}
 
@@ -58,12 +59,12 @@ export function Header() {
               color="orange" 
             />
             
-            {isLoggedIn && (
+            {isAdmin && (
               <DesktopButton 
-                icon={<FaTrophy />} 
-                label="Tournaments" 
-                onClick={() => navigate('/tournaments')} 
-                color="purple" 
+                icon={<FaCrown />} 
+                label="Admin" 
+                onClick={() => navigate('/admin')} 
+                color="yellow" 
               />
             )}
             
@@ -113,12 +114,12 @@ export function Header() {
               </button>
             )}
 
-            {isAdmin && (
+            {isLoggedIn && (
               <button
-                onClick={() => { navigate('/admin'); setMenuOpen(false) }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-yellow-600 hover:text-white"
+                onClick={() => { navigate('/tournaments'); setMenuOpen(false) }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-purple-600 hover:text-white"
               >
-                <FaCrown /> Admin Dashboard
+                <FaTrophy /> Tournaments
               </button>
             )}
 
@@ -129,12 +130,12 @@ export function Header() {
               <FaBars /> Rules
             </button>
 
-            {isLoggedIn && (
+            {isAdmin && (
               <button
-                onClick={() => { navigate('/tournaments'); setMenuOpen(false) }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-purple-600 hover:text-white"
+                onClick={() => { navigate('/admin'); setMenuOpen(false) }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-yellow-600 hover:text-white"
               >
-                <FaTrophy /> Tournaments
+                <FaCrown /> Admin Dashboard
               </button>
             )}
 

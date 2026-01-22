@@ -1,14 +1,23 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Tournament } from '../../types/Tournament';
-import { FaCalendar, FaUsers, FaTrophy, FaGamepad, FaCheckCircle } from 'react-icons/fa';
+import { FaCalendar, FaUsers, FaTrophy, FaGamepad, FaCheckCircle, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { API_BASE_URL } from '../../types/Api';
+import { challongeApi } from '../../services/challongeApi';
 
 interface TournamentCardProps {
   tournament: Tournament;
+  onTournamentUpdate?: () => void;
 }
 
-export function TournamentCard({ tournament }: TournamentCardProps) {
+export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCardProps) {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isParticipant, setIsParticipant] = useState(tournament.isParticipant || false);
+  
   const isCompleted = tournament.state === 'complete';
   const isUnderway = tournament.state === 'underway';
-  const isParticipant = tournament.isParticipant || false;
 //   const isPending = tournament.state === 'pending';
 
   const getStateColor = () => {
@@ -50,6 +59,99 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const handleJoinTournament = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setError('Authentication required');
+        return;
+      }
+
+      // Check Challonge connection status first
+      const status = await challongeApi.getStatus();
+      if (!status.connected) {
+        navigate('/account');
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/challonge/tournaments/${tournament.id}/join`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        
+        // If no Challonge connection, redirect to account settings
+        if (response.status === 403) {
+          navigate('/account-settings');
+          return;
+        }
+        
+        throw new Error(errorData.message || 'Failed to join tournament');
+      }
+
+      setIsParticipant(true);
+      if (onTournamentUpdate) {
+        onTournamentUpdate();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLeaveTournament = async () => {
+    if (!confirm('Are you sure you want to leave this tournament?')) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setError('Authentication required');
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/challonge/tournaments/${tournament.id}/leave`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        
+        // If no Challonge connection, redirect to account settings
+        if (response.status === 403) {
+          navigate('/account-settings');
+          return;
+        }
+        
+        throw new Error(errorData.message || 'Failed to leave tournament');
+      }
+
+      setIsParticipant(false);
+      if (onTournamentUpdate) {
+        onTournamentUpdate();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -103,15 +205,45 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
       </div>
 
       {!isCompleted && (
-        <div className="mt-4 pt-4 border-t border-gray-700">
-          <a
-            href={`https://challonge.com/${tournament.url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
-          >
-            View on Challonge →
-          </a>
+        <div className="mt-4 pt-4 border-t border-gray-700 space-y-3">
+          {error && (
+            <div className="bg-red-900/50 border border-red-700 rounded-md p-2 text-sm text-red-200">
+              {error}
+            </div>
+          )}
+          
+          <div className="flex items-center justify-between gap-2">
+            <a
+              href={`https://challonge.com/${tournament.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+            >
+              View on Challonge →
+            </a>
+            
+            {tournament.state === 'pending' && (
+              isParticipant ? (
+                <button
+                  onClick={handleLeaveTournament}
+                  disabled={isLoading}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+                >
+                  <FaSignOutAlt />
+                  {isLoading ? 'Leaving...' : 'Leave'}
+                </button>
+              ) : (
+                <button
+                  onClick={handleJoinTournament}
+                  disabled={isLoading}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+                >
+                  <FaSignInAlt />
+                  {isLoading ? 'Joining...' : 'Join'}
+                </button>
+              )
+            )}
+          </div>
         </div>
       )}
     </div>
