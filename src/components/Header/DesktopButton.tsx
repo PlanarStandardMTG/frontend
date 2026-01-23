@@ -8,6 +8,7 @@ const COLOR_CLASSES = {
   gray: 'bg-gray-600 shadow-gray-500/50 hover:bg-gray-700',
   orange: 'bg-orange-600 shadow-orange-500/50 hover:bg-orange-700',
   yellow: 'bg-yellow-600 shadow-yellow-500/50 hover:bg-yellow-700',
+  cyan: 'bg-cyan-600 shadow-cyan-500/50 hover:bg-cyan-700',
 };
 
 interface DesktopButtonProps {
