@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
 
 interface ProtectedRouteProps {
@@ -7,9 +7,10 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isLoggedIn } = useAuth()
+  const location = useLocation()
 
   if (!isLoggedIn) {
-    return <Navigate to="/auth" replace />
+    return <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />
   }
 
   return <>{children}</>

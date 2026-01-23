@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/useAuth';
 import { API_BASE_URL } from '../types/Api';
 import { 
@@ -25,6 +25,8 @@ export function Authentication() {
   const [success, setSuccess] = useState('');
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectPath = searchParams.get('redirect') || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,9 +97,9 @@ export function Authentication() {
           // Reset rate limiter on successful login
           authRateLimiter.reset(`auth-${mode}`);
           
-          // Redirect to dashboard after 1 second
+          // Redirect to original destination or dashboard after 1 second
           setTimeout(() => {
-            navigate('/dashboard');
+            navigate(redirectPath);
           }, 1000);
         } else {
           setError('Invalid authentication response.');

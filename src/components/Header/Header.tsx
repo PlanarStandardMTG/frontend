@@ -46,7 +46,7 @@ export function Header() {
             <DesktopButton 
               icon={<FaTrophy />} 
               label="Tournaments" 
-              onClick={() => navigate(isLoggedIn ? '/tournaments' : '/auth')} 
+              onClick={() => navigate(isLoggedIn ? '/tournaments' : '/auth?redirect=/tournaments')} 
               color="purple" 
             />
 
