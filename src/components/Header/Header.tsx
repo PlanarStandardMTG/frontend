@@ -33,7 +33,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden sm:flex items-center gap-3">
+          <nav className="hidden lg:flex items-center gap-3">
             {isLoggedIn && (
               <DesktopButton 
                 icon={<FaTachometerAlt />} 
@@ -91,7 +91,7 @@ export function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="sm:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-200 hover:text-white focus:outline-none">
               <FaBars size={24} />
             </button>
@@ -101,7 +101,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="sm:hidden bg-gray-800 border-t border-gray-700">
+        <div className="lg:hidden bg-gray-800 border-t border-gray-700">
           <div className="flex flex-col p-2 space-y-2">
             <button
               onClick={() => { navigate('/'); setMenuOpen(false) }}
