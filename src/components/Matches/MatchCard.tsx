@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { Match } from '../../types/Match'
 import { useAuth } from '../../contexts/useAuth'
 import { API_BASE_URL } from '../../types/Api'
+import { getAuthToken } from '../../utils/apiSecurity'
+import { sanitizeText, isValidUUID } from '../../utils/security'
 
 interface MatchCardProps {
   match: Match
@@ -27,29 +29,50 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
   }
 
   const handleCompleteMatch = async (winnerId: string) => {
+    // Validate winnerId
+    if (!isValidUUID(winnerId)) {
+      setError('Invalid winner selection');
+      return;
+    }
+    
+    // Validate winner is one of the players
+    if (winnerId !== match.player1Id && winnerId !== match.player2Id) {
+      setError('Winner must be one of the match players');
+      return;
+    }
+    
     setIsCompleting(true)
     setError(null)
 
     try {
-      const token = localStorage.getItem('authToken')
+      const token = getAuthToken()
+      if (!token) {
+        setError('Authentication required');
+        setIsCompleting(false);
+        return;
+      }
+      
       const response = await fetch(`${API_BASE_URL}/api/matches/${match.id}/complete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
         body: JSON.stringify({ winnerId })
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to complete match')
+        throw new Error(sanitizeText(data.message || 'Failed to complete match'))
       }
 
       onMatchCompleted?.()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to complete match')
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'Failed to complete match'
+      setError(errorMessage)
     } finally {
       setIsCompleting(false)
     }

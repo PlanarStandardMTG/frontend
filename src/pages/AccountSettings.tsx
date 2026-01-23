@@ -2,13 +2,14 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
 import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa'
 import { ChallongeConnection } from '../components/Challonge/ChallongeConnection'
+import { clearAuthToken } from '../utils/apiSecurity'
 
 export function AccountSettings() {
   const { setIsLoggedIn } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken')
+    clearAuthToken()
     setIsLoggedIn(false)
     navigate('/auth')
   }

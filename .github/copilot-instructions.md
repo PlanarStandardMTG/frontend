@@ -25,7 +25,7 @@ React + TypeScript frontend for a community-driven Magic: the Gathering format. 
 - Auth endpoints documented in `README.md`:
   - `POST /api/auth/register` - email, password, username
   - `POST /api/auth/login` - returns token
-  - `GET /api/auth/me` - requires Bearer token in Authorization header
+  - `GET /api/users/me` - requires Bearer token in Authorization header
 
 ### Component Conventions
 - **File naming**: PascalCase for components (`Header.tsx`, `BlindEternitiesBackground.tsx`)
@@ -92,3 +92,7 @@ npm run preview   # Preview production build locally
 2. New components: Use named exports, TypeScript props interfaces
 3. New global state: Follow the AuthContext pattern (provider/hook separation)
 4. Forms: Always include loading states, error handling, success feedback
+
+## When Creating .md Files
+- Use clear headings and subheadings for structure
+- Place them in .github/

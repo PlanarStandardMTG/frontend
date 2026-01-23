@@ -4,6 +4,8 @@ import type { Tournament } from '../../types/Tournament';
 import { FaCalendar, FaUsers, FaTrophy, FaGamepad, FaCheckCircle, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { API_BASE_URL } from '../../types/Api';
 import { challongeApi } from '../../services/challongeApi';
+import { getAuthToken } from '../../utils/apiSecurity';
+import { sanitizeText, sanitizeURL } from '../../utils/security';
 
 interface TournamentCardProps {
   tournament: Tournament;
@@ -66,9 +68,10 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
     setError(null);
 
     try {
-      const token = localStorage.getItem('authToken');
+      const token = getAuthToken();
       if (!token) {
         setError('Authentication required');
+        setIsLoading(false);
         return;
       }
 
@@ -83,7 +86,9 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
       });
 
       if (!response.ok) {
@@ -95,7 +100,7 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
           return;
         }
         
-        throw new Error(errorData.message || 'Failed to join tournament');
+        throw new Error(sanitizeText(errorData.message || 'Failed to join tournament'));
       }
 
       setIsParticipant(true);
@@ -103,7 +108,8 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
         onTournamentUpdate();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'An error occurred';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -118,9 +124,10 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
     setError(null);
 
     try {
-      const token = localStorage.getItem('authToken');
+      const token = getAuthToken();
       if (!token) {
         setError('Authentication required');
+        setIsLoading(false);
         return;
       }
 
@@ -128,7 +135,9 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
       });
 
       if (!response.ok) {
@@ -140,7 +149,7 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
           return;
         }
         
-        throw new Error(errorData.message || 'Failed to leave tournament');
+        throw new Error(sanitizeText(errorData.message || 'Failed to leave tournament'));
       }
 
       setIsParticipant(false);
@@ -148,7 +157,8 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
         onTournamentUpdate();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'An error occurred';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -214,7 +224,7 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
           
           <div className="flex items-center justify-between gap-2">
             <a
-              href={`https://challonge.com/${tournament.url}`}
+              href={sanitizeURL(`https://challonge.com/${tournament.url}`)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-300 text-sm transition-colors"

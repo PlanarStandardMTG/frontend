@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FaSpinner, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa'
 import { challongeApi } from '../services/challongeApi'
+import { validateOAuthState } from '../utils/apiSecurity'
+import { sanitizeText } from '../utils/security'
 
 export function ChallongeCallback() {
   const [searchParams] = useSearchParams()
@@ -21,7 +23,8 @@ export function ChallongeCallback() {
         // Check for OAuth errors from Challonge
         if (error) {
           setStatus('error')
-          setMessage(errorDescription || `OAuth error: ${error}`)
+          const safeErrorDesc = sanitizeText(errorDescription || `OAuth error: ${error}`)
+          setMessage(safeErrorDesc)
           return
         }
 
@@ -33,15 +36,12 @@ export function ChallongeCallback() {
         }
 
         // Verify state matches what we stored (CSRF protection)
-        const storedState = sessionStorage.getItem('challonge_oauth_state')
-        if (state !== storedState) {
+        if (!validateOAuthState(state)) {
           setStatus('error')
-          setMessage('State mismatch - possible CSRF attack')
+          setMessage('Invalid state parameter - possible CSRF attack detected')
+          console.error('OAuth state validation failed')
           return
         }
-
-        // Clear stored state
-        sessionStorage.removeItem('challonge_oauth_state')
 
         // Exchange code for tokens
         await challongeApi.callback(code, state)
@@ -55,7 +55,10 @@ export function ChallongeCallback() {
         }, 2000)
       } catch (err) {
         setStatus('error')
-        setMessage(err instanceof Error ? err.message : 'Failed to connect Challonge account')
+        const errorMessage = err instanceof Error 
+          ? sanitizeText(err.message) 
+          : 'Failed to connect Challonge account'
+        setMessage(errorMessage)
       }
     }
 

@@ -2,6 +2,18 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/useAuth';
 import { API_BASE_URL } from '../types/Api';
+import { 
+  isValidEmail, 
+  isValidUsername, 
+  isValidPassword,
+  sanitizeText,
+  RateLimiter 
+} from '../utils/security';
+import { setAuthToken } from '../utils/apiSecurity';
+import { hashPassword } from '../utils/passwordEncryption';
+
+// Rate limiter for authentication attempts
+const authRateLimiter = new RateLimiter(5, 300000); // 5 attempts per 5 minutes
 
 export function Authentication() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -18,47 +30,98 @@ export function Authentication() {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    // Client-side validation
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setError('Password must be between 8 and 128 characters.');
+      return;
+    }
+
+    if (mode === 'register') {
+      if (!isValidUsername(username)) {
+        setError('Username must be 3-20 characters and contain only letters, numbers, underscores, and hyphens.');
+        return;
+      }
+    }
+
+    // Rate limiting check
+    if (!authRateLimiter.isAllowed(`auth-${mode}`)) {
+      setError('Too many attempts. Please try again in a few minutes.');
+      return;
+    }
+
     setLoading(true);
 
     try {
+      // Hash the password before sending
+      const hashedPassword = await hashPassword(password);
+      
       const response = await fetch(`${API_BASE_URL}/api/auth/${mode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest', // CSRF protection
         },
-        body: JSON.stringify({ email, password, username }),
+        credentials: 'same-origin',
+        body: JSON.stringify({ 
+          email: email.trim().toLowerCase(), 
+          passwordHash: hashedPassword, 
+          username: username.trim() 
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'An error occurred. Please try again.');
+        // Sanitize error message to prevent XSS
+        const errorMessage = sanitizeText(data.message || 'An error occurred. Please try again.');
+        setError(errorMessage);
         return;
       }
 
       if (mode === 'login') {
-        // Store token from login response
+        // Store token securely
         const token = data.token;
-        localStorage.setItem('authToken', token);
-        setIsLoggedIn(true);
-        setSuccess('Login successful! Redirecting...');
-        // Redirect to dashboard after 1 second
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1000);
+        if (typeof token === 'string' && token.length > 0) {
+          setAuthToken(token);
+          setIsLoggedIn(true);
+          setSuccess('Login successful! Redirecting...');
+          
+          // Reset rate limiter on successful login
+          authRateLimiter.reset(`auth-${mode}`);
+          
+          // Redirect to dashboard after 1 second
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 1000);
+        } else {
+          setError('Invalid authentication response.');
+        }
       } else {
         // After successful registration, switch to login mode
         setSuccess('Account created successfully! Please log in.');
         setEmail('');
         setPassword('');
         setUsername('');
+        
+        // Reset rate limiter on successful registration
+        authRateLimiter.reset(`auth-${mode}`);
+        
         setTimeout(() => {
           setMode('login');
           setSuccess('');
         }, 2000);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
+      const errorMessage = err instanceof Error 
+        ? sanitizeText(err.message) 
+        : 'An error occurred. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -118,6 +181,8 @@ export function Authentication() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
                 required
+                autoComplete="email"
+                maxLength={254}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50"
               />
             </div>
@@ -131,8 +196,16 @@ export function Authentication() {
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
                 required
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                minLength={8}
+                maxLength={128}
                 className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50"
               />
+              {mode === 'register' && (
+                <p className="mt-1 text-xs text-gray-400">
+                  Minimum 8 characters required
+                </p>
+              )}
             </div>
 
             {mode === 'register' && (
@@ -145,8 +218,15 @@ export function Authentication() {
                   onChange={(e) => setUsername(e.target.value)}
                   disabled={loading}
                   required
+                  autoComplete="username"
+                  minLength={3}
+                  maxLength={20}
+                  pattern="[a-zA-Z0-9_-]{3,20}"
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50"
                 />
+                <p className="mt-1 text-xs text-gray-400">
+                  3-20 characters: letters, numbers, underscores, and hyphens only
+                </p>
               </div>
             )}
             

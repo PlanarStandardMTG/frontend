@@ -21,7 +21,7 @@ This repository contains the frontend code for the Planar Standard project. It i
     - `password`: string
   - Response:
     - `token`: string
-- Get User Profile: `GET /api/auth/me`
+- Get User Profile: `GET /api/users/me`
   - Headers:
     - `Authorization`: Bearer token
   - Response:

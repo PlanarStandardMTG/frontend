@@ -3,6 +3,8 @@ import { TournamentCard } from '../components/Tournaments/TournamentCard';
 import type { Tournament, TournamentsResponse } from '../types/Tournament';
 import { API_BASE_URL } from '../types/Api';
 import { FaTrophy, FaExclamationTriangle, FaFilter, FaCheckCircle } from 'react-icons/fa';
+import { getAuthToken } from '../utils/apiSecurity';
+import { sanitizeText } from '../utils/security';
 
 export function Tournaments() {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
@@ -19,7 +21,7 @@ export function Tournaments() {
       setLoading(true);
       setError(null);
 
-      const token = localStorage.getItem('authToken');
+      const token = getAuthToken();
       if (!token) {
         setError('Authentication required');
         setLoading(false);
@@ -31,18 +33,21 @@ export function Tournaments() {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch tournaments');
+        throw new Error(sanitizeText(errorData.message || 'Failed to fetch tournaments'));
       }
 
       const data: TournamentsResponse = await response.json();
       setTournaments(data.tournaments);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'An error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

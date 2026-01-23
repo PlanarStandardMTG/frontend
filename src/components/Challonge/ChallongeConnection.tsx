@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { FaTrophy, FaLink, FaUnlink, FaCheckCircle, FaExclamationTriangle, FaSync } from 'react-icons/fa'
 import { challongeApi } from '../../services/challongeApi'
 import type { ChallongeConnectionStatus } from '../../types/Challonge'
+import { sanitizeURL } from '../../utils/security'
 
 export function ChallongeConnection() {
   const [status, setStatus] = useState<ChallongeConnectionStatus | null>(null)
@@ -32,11 +33,17 @@ export function ChallongeConnection() {
       
       const { authorizationUrl, state } = await challongeApi.connect()
       
+      // Validate authorization URL before redirect
+      const safeUrl = sanitizeURL(authorizationUrl)
+      if (!safeUrl || !safeUrl.startsWith('https://')) {
+        throw new Error('Invalid authorization URL received')
+      }
+      
       // Store state in sessionStorage for verification in callback
       sessionStorage.setItem('challonge_oauth_state', state)
       
       // Redirect to Challonge OAuth page
-      window.location.href = authorizationUrl
+      window.location.href = safeUrl
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initiate connection')
       setActionLoading(false)

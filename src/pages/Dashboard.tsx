@@ -9,6 +9,8 @@ import { CreateMatchForm } from '../components/Matches/CreateMatchForm';
 import { TournamentCard } from '../components/Tournaments/TournamentCard';
 import { useAuth } from '../contexts/useAuth';
 import { FaTrophy } from 'react-icons/fa';
+import { getAuthToken } from '../utils/apiSecurity';
+import { sanitizeText } from '../utils/security';
 
 export function Dashboard() {
   const { user: authUser, isAdmin } = useAuth();
@@ -32,11 +34,15 @@ export function Dashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+        const token = getAuthToken();
+        if (!token) return;
+        
+        const response = await fetch(`${API_BASE_URL}/api/users/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
+            'X-Requested-With': 'XMLHttpRequest',
           },
+          credentials: 'same-origin',
         });
         if (response.ok) {
           setUser(await response.json());
@@ -54,7 +60,7 @@ export function Dashboard() {
       setIsLoadingTournaments(true);
 
       try {
-        const token = localStorage.getItem('authToken');
+        const token = getAuthToken();
         if (!token) {
           setIsLoadingTournaments(false);
           return;
@@ -65,7 +71,9 @@ export function Dashboard() {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
           },
+          credentials: 'same-origin',
         });
 
         if (response.ok) {
@@ -90,7 +98,12 @@ export function Dashboard() {
       setError(null);
 
       try {
-        const token = localStorage.getItem('authToken');
+        const token = getAuthToken();
+        if (!token) {
+          setError('Authentication required');
+          setIsLoadingMatches(false);
+          return;
+        }
         
         let endpoint = `${API_BASE_URL}/api/matches`;
         if (viewMode === 'my-matches') {
@@ -103,14 +116,16 @@ export function Dashboard() {
 
         const response = await fetch(endpoint, {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            'Authorization': `Bearer ${token}`,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch matches');
+          throw new Error(sanitizeText(data.message || 'Failed to fetch matches'));
         }
 
         const matchesData = data as MatchesResponse;
@@ -124,7 +139,8 @@ export function Dashboard() {
         setMatches(filteredMatches);
         setPagination(matchesData.pagination);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load matches');
+        const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'Failed to load matches';
+        setError(errorMessage);
       } finally {
         setIsLoadingMatches(false);
       }
@@ -135,11 +151,15 @@ export function Dashboard() {
 
   const refreshUserData = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+      const token = getAuthToken();
+      if (!token) return;
+      
+      const response = await fetch(`${API_BASE_URL}/api/users/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
       });
       if (response.ok) {
         setUser(await response.json());

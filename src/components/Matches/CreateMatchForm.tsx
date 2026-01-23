@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { API_BASE_URL } from '../../types/Api'
 import type { UserDTO } from '../../types/User'
+import { getAuthToken } from '../../utils/apiSecurity'
+import { sanitizeText, isValidUUID } from '../../utils/security'
 
 interface CreateMatchFormProps {
   onMatchCreated?: () => void
@@ -21,22 +23,31 @@ export function CreateMatchForm({ onMatchCreated }: CreateMatchFormProps) {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('authToken')
+      const token = getAuthToken()
+      if (!token) {
+        setError('Authentication required');
+        setIsLoadingUsers(false);
+        return;
+      }
+      
       const response = await fetch(`${API_BASE_URL}/api/admin/users`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'same-origin',
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch users')
+        throw new Error(sanitizeText(data.message || 'Failed to fetch users'))
       }
 
       setUsers(data.users || [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load users')
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'Failed to load users'
+      setError(errorMessage)
     } finally {
       setIsLoadingUsers(false)
     }
@@ -60,21 +71,36 @@ export function CreateMatchForm({ onMatchCreated }: CreateMatchFormProps) {
       return
     }
 
+    // Validate UUIDs to prevent injection
+    if (!isValidUUID(player1Id) || !isValidUUID(player2Id)) {
+      setError('Invalid player selection')
+      setIsLoading(false)
+      return
+    }
+
     try {
-      const token = localStorage.getItem('authToken')
+      const token = getAuthToken()
+      if (!token) {
+        setError('Authentication required')
+        setIsLoading(false)
+        return
+      }
+      
       const response = await fetch(`${API_BASE_URL}/api/matches`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'same-origin',
         body: JSON.stringify({ player1Id, player2Id })
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to create match')
+        throw new Error(sanitizeText(data.message || 'Failed to create match'))
       }
 
       setSuccess(true)
@@ -85,7 +111,8 @@ export function CreateMatchForm({ onMatchCreated }: CreateMatchFormProps) {
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create match')
+      const errorMessage = err instanceof Error ? sanitizeText(err.message) : 'Failed to create match'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

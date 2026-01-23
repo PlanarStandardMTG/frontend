@@ -6,11 +6,14 @@ import type {
   ChallongeRefreshResponse,
   ChallongeDisconnectResponse,
 } from '../types/Challonge'
+import { getAuthToken } from '../utils/apiSecurity'
+import { sanitizeText } from '../utils/security'
 
 const getAuthHeaders = () => {
-  const token = localStorage.getItem('authToken')
+  const token = getAuthToken()
   return {
     'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
     ...(token && { Authorization: `Bearer ${token}` }),
   }
 }
@@ -23,11 +26,12 @@ export const challongeApi = {
     const response = await fetch(`${API_BASE_URL}/api/challonge/connect`, {
       method: 'GET',
       headers: getAuthHeaders(),
+      credentials: 'same-origin',
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to initiate Challonge connection')
+      throw new Error(sanitizeText(error.message || 'Failed to initiate Challonge connection'))
     }
 
     return response.json()
@@ -40,12 +44,13 @@ export const challongeApi = {
     const response = await fetch(`${API_BASE_URL}/api/challonge/callback`, {
       method: 'POST',
       headers: getAuthHeaders(),
+      credentials: 'same-origin',
       body: JSON.stringify({ code, state }),
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to complete Challonge connection')
+      throw new Error(sanitizeText(error.message || 'Failed to complete Challonge connection'))
     }
 
     return response.json()
@@ -58,11 +63,12 @@ export const challongeApi = {
     const response = await fetch(`${API_BASE_URL}/api/challonge/status`, {
       method: 'GET',
       headers: getAuthHeaders(),
+      credentials: 'same-origin',
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to get Challonge status')
+      throw new Error(sanitizeText(error.message || 'Failed to get Challonge status'))
     }
 
     return response.json()
@@ -75,11 +81,12 @@ export const challongeApi = {
     const response = await fetch(`${API_BASE_URL}/api/challonge/refresh`, {
       method: 'POST',
       headers: getAuthHeaders(),
+      credentials: 'same-origin',
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to refresh Challonge token')
+      throw new Error(sanitizeText(error.message || 'Failed to refresh Challonge token'))
     }
 
     return response.json()
@@ -89,17 +96,19 @@ export const challongeApi = {
    * Disconnect Challonge account
    */
   async disconnect(): Promise<ChallongeDisconnectResponse> {
-    const token = localStorage.getItem('authToken')
+    const token = getAuthToken()
     const response = await fetch(`${API_BASE_URL}/api/challonge/disconnect`, {
       method: 'DELETE',
       headers: {
+        'X-Requested-With': 'XMLHttpRequest',
         ...(token && { Authorization: `Bearer ${token}` }),
       },
+      credentials: 'same-origin',
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to disconnect Challonge')
+      throw new Error(sanitizeText(error.message || 'Failed to disconnect Challonge'))
     }
 
     return response.json()
