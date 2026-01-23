@@ -32,6 +32,10 @@ export function Home() {
             <NavigationButton to="/rules">
               View Rules
             </NavigationButton>
+
+            <NavigationButton to="/archetype-map">
+              Archetype Map
+            </NavigationButton>
           </div>
         </section>
 

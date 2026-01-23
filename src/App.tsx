@@ -11,6 +11,7 @@ import { AdminDashboard } from './pages/AdminDashboard'
 import { AccountSettings } from './pages/AccountSettings'
 import { ChallongeCallback } from './pages/ChallongeCallback'
 import { Tournaments } from './pages/Tournaments'
+import { ArchetypeMap } from './pages/ArchetypeMap'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/auth/challonge/callback" element={<ProtectedRoute><ChallongeCallback /></ProtectedRoute>} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/tournaments" element={<ProtectedRoute><Tournaments /></ProtectedRoute>} />
+            <Route path="/archetype-map" element={<ArchetypeMap />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </MainLayout>
