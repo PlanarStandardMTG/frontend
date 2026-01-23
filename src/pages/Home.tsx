@@ -25,6 +25,10 @@ export function Home() {
               </NavigationButton>
             )}
 
+            <NavigationButton to="/tournaments">
+              Tournaments
+            </NavigationButton>
+
             <NavigationButton to="/rules">
               View Rules
             </NavigationButton>
