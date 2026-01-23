@@ -8,7 +8,7 @@ import { MatchCard } from '../components/Matches/MatchCard';
 import { CreateMatchForm } from '../components/Matches/CreateMatchForm';
 import { TournamentCard } from '../components/Tournaments/TournamentCard';
 import { useAuth } from '../contexts/useAuth';
-import { FaTrophy } from 'react-icons/fa';
+import { FaTrophy, FaChevronDown } from 'react-icons/fa';
 import { getAuthToken } from '../utils/apiSecurity';
 import { sanitizeText } from '../utils/security';
 
@@ -29,6 +29,14 @@ export function Dashboard() {
     offset: 0,
     total: 0,
     hasMore: false
+  });
+  const [isTournamentsCollapsed, setIsTournamentsCollapsed] = useState(() => {
+    const stored = localStorage.getItem('dashboardTournamentsCollapsed');
+    return stored === 'true';
+  });
+  const [isMatchesCollapsed, setIsMatchesCollapsed] = useState(() => {
+    const stored = localStorage.getItem('dashboardMatchesCollapsed');
+    return stored === 'true';
   });
 
   useEffect(() => {
@@ -205,6 +213,18 @@ export function Dashboard() {
     t => t.isParticipant && (t.state === 'pending' || t.state === 'awaiting_review')
   );
 
+  const toggleTournaments = () => {
+    const newState = !isTournamentsCollapsed;
+    setIsTournamentsCollapsed(newState);
+    localStorage.setItem('dashboardTournamentsCollapsed', String(newState));
+  };
+
+  const toggleMatches = () => {
+    const newState = !isMatchesCollapsed;
+    setIsMatchesCollapsed(newState);
+    localStorage.setItem('dashboardMatchesCollapsed', String(newState));
+  };
+
   return (
     <div className="relative min-h-screen px-6 py-10 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800 text-white">
       {/* Welcome Header with ELO */}
@@ -227,183 +247,204 @@ export function Dashboard() {
 
       {/* Upcoming Tournaments Section */}
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-4xl font-bold text-white flex items-center gap-3">
-            {/* <FaTrophy className="text-yellow-400" /> */}
+        <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
+          <button
+            onClick={toggleTournaments}
+            className="flex items-center gap-3 text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition-colors text-left"
+          >
+            <FaChevronDown 
+              className={`text-lg md:text-xl transition-transform flex-shrink-0 ${isTournamentsCollapsed ? '-rotate-90' : ''}`}
+            />
             Upcoming Tournaments
-          </h2>
+          </button>
           <button
             onClick={() => navigate('/tournaments')}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-semibold"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-md transition-colors text-sm font-semibold self-start md:self-auto"
           >
-            Browse All
+            Browse
           </button>
         </div>
 
-        {isLoadingTournaments && (
-          <div className="text-center py-8">
-            <div className="text-gray-400">Loading tournaments...</div>
-          </div>
-        )}
+        {!isTournamentsCollapsed && (
+          <>
+            {isLoadingTournaments && (
+              <div className="text-center py-8">
+                <div className="text-gray-400">Loading tournaments...</div>
+              </div>
+            )}
 
-        {!isLoadingTournaments && upcomingTournaments.length === 0 && (
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8 text-center">
-            <FaTrophy className="text-gray-600 text-5xl mx-auto mb-4" />
-            <p className="text-gray-400 mb-4">You haven't signed up for any tournaments yet</p>
-            <button
-              onClick={() => navigate('/tournaments')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-colors font-semibold"
-            >
-              Browse Tournaments
-            </button>
-          </div>
-        )}
+            {!isLoadingTournaments && upcomingTournaments.length === 0 && (
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8 text-center">
+                <FaTrophy className="text-gray-600 text-5xl mx-auto mb-4" />
+                <p className="text-gray-400 mb-4">You haven't signed up for any tournaments yet</p>
+                <button
+                  onClick={() => navigate('/tournaments')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-colors font-semibold"
+                >
+                  Browse Tournaments
+                </button>
+              </div>
+            )}
 
-        {!isLoadingTournaments && upcomingTournaments.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingTournaments.map((tournament) => (
-              <TournamentCard 
-                key={tournament.id} 
-                tournament={tournament} 
-                onTournamentUpdate={handleTournamentUpdate}
-              />
-            ))}
-          </div>
+            {!isLoadingTournaments && upcomingTournaments.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {upcomingTournaments.map((tournament) => (
+                  <TournamentCard 
+                    key={tournament.id} 
+                    tournament={tournament} 
+                    onTournamentUpdate={handleTournamentUpdate}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
       {/* Matches Section */}
       <div className="mb-8">
-        <h2 className="text-4xl font-bold mb-4 text-white">Match History</h2>
+        <button
+          onClick={toggleMatches}
+          className="flex items-center gap-3 text-3xl md:text-4xl font-bold mb-4 text-white hover:text-gray-300 transition-colors text-left w-full md:w-auto"
+        >
+          <FaChevronDown 
+            className={`text-lg md:text-xl transition-transform flex-shrink-0 ${isMatchesCollapsed ? '-rotate-90' : ''}`}
+          />
+          Match History
+        </button>
         
-        {/* Controls */}
-        <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-          <div className="flex gap-2 flex-wrap">
-            {/* View Mode Filters */}
-            <div className="flex gap-1 bg-gray-800 rounded-md p-1">
-              <button
-                onClick={() => setViewMode('my-matches')}
-                className={`px-3 py-1.5 rounded transition-colors text-sm ${
-                  viewMode === 'my-matches'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                My Matches
-              </button>
-              {isAdmin && (
-                <>
-                  <button
-                    onClick={() => setViewMode('pending')}
-                    className={`px-3 py-1.5 rounded transition-colors text-sm ${
-                      viewMode === 'pending'
-                        ? 'bg-yellow-600 text-white'
-                        : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                    }`}
-                  >
-                    Pending
-                  </button>
-                  <button
-                    onClick={() => setViewMode('all-matches')}
-                    className={`px-3 py-1.5 rounded transition-colors text-sm ${
-                      viewMode === 'all-matches'
-                        ? 'bg-purple-600 text-white'
-                        : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                    }`}
-                  >
-                    All Matches
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* Create Match Button */}
-            {isAdmin && (
-              <button
-                onClick={() => setShowCreateForm(!showCreateForm)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors text-sm"
-              >
-                {showCreateForm ? 'Hide Form' : 'Create Match'}
-              </button>
-            )}
-          </div>
-
-          <div className="text-sm text-gray-400">
-            Showing {pagination.offset + 1}-{Math.min(pagination.offset + pagination.limit, pagination.total)} of {pagination.total} matches
-          </div>
-        </div>
-
-        {/* Create Match Form (Admin Only) */}
-        {isAdmin && showCreateForm && (
-          <div className="mb-6">
-            <CreateMatchForm onMatchCreated={handleMatchCreated} />
-          </div>
-        )}
-
-        {/* Loading State */}
-        {isLoadingMatches && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 text-lg">Loading matches...</div>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && !isLoadingMatches && (
-          <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-md mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Matches List */}
-        {!isLoadingMatches && !error && matches.length === 0 && (
-          <div className="text-center py-12 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700">
-            <div className="text-gray-400 text-lg mb-2">No matches found</div>
-            <p className="text-gray-500 text-sm">
-              {viewMode === 'my-matches' 
-                ? "You haven't played any matches yet"
-                : viewMode === 'pending'
-                ? 'No pending matches at the moment'
-                : 'No matches have been created yet'
-              }
-            </p>
-          </div>
-        )}
-
-        {!isLoadingMatches && !error && matches.length > 0 && (
+        {!isMatchesCollapsed && (
           <>
-            <div className="space-y-4 mb-6">
-              {matches.map((match) => (
-                <MatchCard 
-                  key={match.id} 
-                  match={match} 
-                  onMatchCompleted={handleMatchCompleted}
-                />
-              ))}
+            {/* Controls */}
+            <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
+              <div className="flex gap-2 flex-wrap">
+                {/* View Mode Filters */}
+                <div className="flex gap-1 bg-gray-800 rounded-md p-1">
+                  <button
+                    onClick={() => setViewMode('my-matches')}
+                    className={`px-3 py-1.5 rounded transition-colors text-sm ${
+                      viewMode === 'my-matches'
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                    }`}
+                  >
+                    My Matches
+                  </button>
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => setViewMode('pending')}
+                        className={`px-3 py-1.5 rounded transition-colors text-sm ${
+                          viewMode === 'pending'
+                            ? 'bg-yellow-600 text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                        }`}
+                      >
+                        Pending
+                      </button>
+                      <button
+                        onClick={() => setViewMode('all-matches')}
+                        className={`px-3 py-1.5 rounded transition-colors text-sm ${
+                          viewMode === 'all-matches'
+                            ? 'bg-purple-600 text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                        }`}
+                      >
+                        All Matches
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Create Match Button */}
+                {isAdmin && (
+                  <button
+                    onClick={() => setShowCreateForm(!showCreateForm)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors text-sm"
+                  >
+                    {showCreateForm ? 'Hide Form' : 'Create Match'}
+                  </button>
+                )}
+              </div>
+
+              <div className="text-sm text-gray-400">
+                Showing {pagination.offset + 1}-{Math.min(pagination.offset + pagination.limit, pagination.total)} of {pagination.total} matches
+              </div>
             </div>
 
-            {/* Pagination Controls */}
-            {pagination.total > pagination.limit && (
-              <div className="flex justify-center gap-4 items-center">
-                <button
-                  onClick={handlePreviousPage}
-                  disabled={pagination.offset === 0}
-                  className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-white px-4 py-2 rounded-md transition-colors"
-                >
-                  Previous
-                </button>
-                
-                <span className="text-gray-400">
-                  Page {Math.floor(pagination.offset / pagination.limit) + 1} of {Math.ceil(pagination.total / pagination.limit)}
-                </span>
-
-                <button
-                  onClick={handleNextPage}
-                  disabled={!pagination.hasMore}
-                  className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-white px-4 py-2 rounded-md transition-colors"
-                >
-                  Next
-                </button>
+            {/* Create Match Form (Admin Only) */}
+            {isAdmin && showCreateForm && (
+              <div className="mb-6">
+                <CreateMatchForm onMatchCreated={handleMatchCreated} />
               </div>
+            )}
+
+            {/* Loading State */}
+            {isLoadingMatches && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 text-lg">Loading matches...</div>
+              </div>
+            )}
+
+            {/* Error State */}
+            {error && !isLoadingMatches && (
+              <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-md mb-6">
+                {error}
+              </div>
+            )}
+
+            {/* Matches List */}
+            {!isLoadingMatches && !error && matches.length === 0 && (
+              <div className="text-center py-12 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700">
+                <div className="text-gray-400 text-lg mb-2">No matches found</div>
+                <p className="text-gray-500 text-sm">
+                  {viewMode === 'my-matches' 
+                    ? "You haven't played any matches yet"
+                    : viewMode === 'pending'
+                    ? 'No pending matches at the moment'
+                    : 'No matches have been created yet'
+                  }
+                </p>
+              </div>
+            )}
+
+            {!isLoadingMatches && !error && matches.length > 0 && (
+              <>
+                <div className="space-y-4 mb-6">
+                  {matches.map((match) => (
+                    <MatchCard 
+                      key={match.id} 
+                      match={match} 
+                      onMatchCompleted={handleMatchCompleted}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {pagination.total > pagination.limit && (
+                  <div className="flex justify-center gap-4 items-center">
+                    <button
+                      onClick={handlePreviousPage}
+                      disabled={pagination.offset === 0}
+                      className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+                    >
+                      Previous
+                    </button>
+                    
+                    <span className="text-gray-400">
+                      Page {Math.floor(pagination.offset / pagination.limit) + 1} of {Math.ceil(pagination.total / pagination.limit)}
+                    </span>
+
+                    <button
+                      onClick={handleNextPage}
+                      disabled={!pagination.hasMore}
+                      className="bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}

@@ -73,7 +73,7 @@ export function Tournaments() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center items-center mb-4">
-            <FaTrophy className="text-yellow-400 text-5xl mr-4" />
+            {/* <FaTrophy className="text-yellow-400 text-5xl mr-4" /> */}
             <h1 className="text-5xl font-bold text-white">Tournaments</h1>
           </div>
           <p className="text-gray-400 text-lg">
