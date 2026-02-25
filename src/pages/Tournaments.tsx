@@ -22,11 +22,11 @@ export function Tournaments() {
       setError(null);
 
       const token = getAuthToken();
-      if (!token) {
-        setError('Authentication required');
-        setLoading(false);
-        return;
-      }
+      // if (!token) {
+      //   setError('Authentication required');
+      //   setLoading(false);
+      //   return;
+      // }
 
       const response = await fetch(`${API_BASE_URL}/api/challonge/tournaments`, {
         method: 'GET',

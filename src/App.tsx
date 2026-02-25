@@ -26,7 +26,7 @@ function App() {
             <Route path="/auth" element={<Authentication />} />
             <Route path="/auth/challonge/callback" element={<ProtectedRoute><ChallongeCallback /></ProtectedRoute>} />
             <Route path="/rules" element={<Rules />} />
-            <Route path="/tournaments" element={<ProtectedRoute><Tournaments /></ProtectedRoute>} />
+            <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/archetype-map" element={<ArchetypeMap />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
