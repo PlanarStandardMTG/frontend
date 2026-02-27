@@ -50,12 +50,12 @@ export function Header() {
               color="purple" 
             />
 
-            <DesktopButton 
+            {/* <DesktopButton 
               icon={<FaChartBar />} 
               label="Leaderboard" 
               onClick={() => navigate('/leaderboard')} 
               color="yellow" 
-            />
+            /> */}
 
             <DesktopButton 
               icon={<FaBars />} 

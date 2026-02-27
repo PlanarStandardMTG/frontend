@@ -25,9 +25,9 @@ export function Home() {
               </NavigationButton>
             )}
 
-            <NavigationButton to="/leaderboard">
+            {/* <NavigationButton to="/leaderboard">
               Leaderboard
-            </NavigationButton>
+            </NavigationButton> */}
 
             <NavigationButton to="/tournaments">
               Tournaments
