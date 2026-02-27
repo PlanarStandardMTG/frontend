@@ -143,11 +143,14 @@ export function CreateMatchForm({ onMatchCreated }: CreateMatchFormProps) {
             disabled={isLoading}
           >
             <option value="">Select Player 1</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.username} (ELO: {user.elo})
-              </option>
-            ))}
+            {users.map((user) => {
+              const displayElo = user.rankedInfo?.elo ?? user.elo ?? 0;
+              return (
+                <option key={user.id} value={user.id}>
+                  {user.username} (ELO: {displayElo})
+                </option>
+              )
+            })}
           </select>
         </div>
 
@@ -163,11 +166,14 @@ export function CreateMatchForm({ onMatchCreated }: CreateMatchFormProps) {
             disabled={isLoading}
           >
             <option value="">Select Player 2</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.username} (ELO: {user.elo})
-              </option>
-            ))}
+            {users.map((user) => {
+              const displayElo = user.rankedInfo?.elo ?? user.elo ?? 0;
+              return (
+                <option key={user.id} value={user.id}>
+                  {user.username} (ELO: {displayElo})
+                </option>
+              )
+            })}
           </select>
         </div>
 

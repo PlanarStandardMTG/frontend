@@ -1,9 +1,17 @@
 import { useState } from 'react'
 import type { Match } from '../../types/Match'
+// import type { UserDTO } from '../../types/User'
 import { useAuth } from '../../contexts/useAuth'
 import { API_BASE_URL } from '../../types/Api'
 import { getAuthToken } from '../../utils/apiSecurity'
 import { sanitizeText, isValidUUID } from '../../utils/security'
+
+// utility to compute a user's elo rating; prefers rankedInfo and falls back to
+// any legacy `elo` field returned by older endpoints. Defaults to 1600 when
+// no data is available, matching server behaviour.
+// function getUserElo(user?: UserDTO): number {
+//   return user?.rankedInfo?.elo ?? user?.elo ?? 1600
+// }
 
 interface MatchCardProps {
   match: Match
@@ -18,15 +26,15 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
   const isPlayer1 = user?.id === match.player1Id
   const isPlayer2 = user?.id === match.player2Id
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     hour: '2-digit',
+  //     minute: '2-digit'
+  //   })
+  // }
 
   const handleCompleteMatch = async (winnerId: string) => {
     // Validate winnerId
@@ -86,7 +94,7 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
   }
 
   const isCompleted = match.completedAt !== null
-  const didWin = (playerId: string) => match.winner === playerId
+  const didWin = (playerRankedId: string) => match.winnerRankedId === playerRankedId
 
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors">
@@ -94,16 +102,16 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
         <div className="flex-1">
           <div className="flex items-center gap-4">
             {/* Player 1 */}
-            <div className={`flex-1 ${didWin(match.player1Id) ? 'font-bold text-yellow-400' : ''}`}>
+            <div className={`flex-1 ${didWin(match.player1Ranked.id) ? 'font-bold text-yellow-400' : ''}`}>
               <div className="flex items-center gap-2">
                 <span className={isPlayer1 ? 'text-blue-400' : 'text-white'}>
-                  {match.player1?.username || 'Unknown'}
+                  {match.player1Ranked?.username || 'Unknown'}
                 </span>
-                {didWin(match.player1Id) && <span className="text-yellow-400">👑</span>}
+                {didWin(match.player1Ranked.id) && <span className="text-yellow-400">👑</span>}
               </div>
               {isCompleted && (
                 <div className="text-sm text-gray-400">
-                  ELO: {match.player1?.elo} {getEloChangeDisplay(match.player1EloChange)}
+                  ELO: {match.player1Ranked?.elo ?? ""} {getEloChangeDisplay(match.player1EloChange)}
                 </div>
               )}
             </div>
@@ -111,16 +119,16 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
             <div className="text-gray-500 font-bold">VS</div>
 
             {/* Player 2 */}
-            <div className={`flex-1 ${didWin(match.player2Id) ? 'font-bold text-yellow-400' : ''}`}>
+            <div className={`flex-1 ${didWin(match.player2Ranked.id) ? 'font-bold text-yellow-400' : ''}`}>
               <div className="flex items-center gap-2">
                 <span className={isPlayer2 ? 'text-blue-400' : 'text-white'}>
-                  {match.player2?.username || 'Unknown'}
+                  {match.player2Ranked?.username || 'Unknown'}
                 </span>
-                {didWin(match.player2Id) && <span className="text-yellow-400">👑</span>}
+                {didWin(match.player2Ranked.id) && <span className="text-yellow-400">👑</span>}
               </div>
               {isCompleted && (
                 <div className="text-sm text-gray-400">
-                  ELO: {match.player2?.elo} {getEloChangeDisplay(match.player2EloChange)}
+                  ELO: {match.player2Ranked?.elo ?? ""} {getEloChangeDisplay(match.player2EloChange)}
                 </div>
               )}
             </div>
@@ -136,10 +144,10 @@ export function MatchCard({ match, onMatchCompleted }: MatchCardProps) {
         </div>
       </div>
 
-      <div className="text-xs text-gray-500 mb-3">
+      {/* <div className="text-xs text-gray-500 mb-3">
         Created: {formatDate(match.createdAt)}
         {match.completedAt && ` • Completed: ${formatDate(match.completedAt)}`}
-      </div>
+      </div> */}
 
       {!isCompleted && isAdmin && (
         <div className="mt-4 pt-4 border-t border-gray-700">

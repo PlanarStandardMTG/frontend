@@ -1,5 +1,6 @@
 import { useAuth } from '../contexts/useAuth'
 import { FaCrown, FaUsers, FaBook, FaChartBar, FaCog } from 'react-icons/fa'
+import { SyncTournaments } from '../components/Admin/SyncTournaments'
 
 export function AdminDashboard() {
   const { user } = useAuth()
@@ -66,6 +67,7 @@ export function AdminDashboard() {
         </div>
 
         {/* Quick Stats */}
+        <SyncTournaments />
         <div className="bg-gray-900/75 backdrop-blur-md rounded-lg p-6 border border-gray-700">
           <h2 className="text-2xl font-bold text-white mb-6">Quick Statistics</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
