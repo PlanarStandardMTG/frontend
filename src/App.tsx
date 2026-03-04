@@ -11,6 +11,7 @@ import { AdminDashboard } from './pages/AdminDashboard'
 import { AccountSettings } from './pages/AccountSettings'
 import { ChallongeCallback } from './pages/ChallongeCallback'
 import { Tournaments } from './pages/Tournaments'
+import { Meta } from './pages/Meta'
 import { ArchetypeMap } from './pages/ArchetypeMap'
 import { Leaderboard } from './pages/Leaderboard'
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/rules" element={<Rules />} />
             <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/meta" element={<Meta />} />
             <Route path="/archetype-map" element={<ArchetypeMap />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

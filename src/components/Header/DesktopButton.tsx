@@ -27,7 +27,7 @@ const DesktopButton = ({ icon, label, onClick, color }: DesktopButtonProps) => {
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`flex items-center justify-center gap-2 p-2 rounded-lg transition-all duration-200
+      className={`flex items-center justify-center w-36 gap-2 p-2 rounded-lg transition-all duration-200
         ${hovered ? `${activeColor} text-white scale-105 shadow-sm` : 'bg-gray-700 text-gray-100 hover:text-white'}`}
       title={label}
     >

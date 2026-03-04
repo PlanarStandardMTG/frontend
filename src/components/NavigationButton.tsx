@@ -15,7 +15,7 @@ export function NavigationButton({
   const navigate = useNavigate()
 
   const baseClasses =
-    'inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40'
+    'inline-flex items-center justify-center w-full px-6 py-3 font-semibold rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40'
 
   const variants = {
     primary:

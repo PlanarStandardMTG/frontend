@@ -1,4 +1,4 @@
-import RuleCard from '../components/Rules/RuleCard';
+import Card from '../components/Card';
 import { NavigationButton } from '../components/NavigationButton';
 
 export function Rules() {
@@ -19,7 +19,7 @@ export function Rules() {
 
           <div className="space-y-8">
             {/* Legal Sets */}
-            <RuleCard title="Legal Sets">
+            <Card title="Legal Sets">
               <p>
                 The following sets are currently legal in Planar Standard:
               </p>
@@ -30,17 +30,17 @@ export function Rules() {
                 <li>Edge of Eternities</li>
                 <li>Lorwyn Eclipsed</li>
               </ul>
-            </RuleCard>
+            </Card>
 
             {/* Banlist */}
-            <RuleCard title="Banlist">
+            <Card title="Banlist">
               <ul className="list-disc list-inside text-gray-200">
                 <li>Cori Steel Cutter</li>
               </ul>
-            </RuleCard>
+            </Card>
 
             {/* Rotation */}
-            <RuleCard title="Rotation Policy">
+            <Card title="Rotation Policy">
               <p>
                 Planar Standard is intended to always feature the previous two
                 years of Universe Within sets.
@@ -49,10 +49,10 @@ export function Rules() {
                 Rotation will coincide with the release of the first set of each
                 year.
               </p>
-            </RuleCard>
+            </Card>
 
             {/* Scryfall */}
-            <RuleCard title="Browse Legal Cards">
+            <Card title="Browse Legal Cards">
               <p>
                 Use the Scryfall search below to explore all cards currently
                 legal in Planar Standard.
@@ -65,7 +65,7 @@ export function Rules() {
               >
                 Scryfall Search
               </a>
-            </RuleCard>
+            </Card>
           </div>
 
           {/* Back */}

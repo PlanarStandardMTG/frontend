@@ -77,7 +77,7 @@ export function Tournaments() {
             <h1 className="text-5xl font-bold text-white">Tournaments</h1>
           </div>
           <p className="text-gray-400 text-lg">
-            View all Planar Standard MTG tournaments
+            View all active and upcoming Planar Standard events
           </p>
           
           {/* View Toggle */}
