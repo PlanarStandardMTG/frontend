@@ -11,6 +11,7 @@ import {
 } from '../utils/security';
 import { setAuthToken } from '../utils/apiSecurity';
 import { hashPassword } from '../utils/passwordEncryption';
+import { PrivacyPolicy } from '../components/PrivacyPolicy';
 
 // Rate limiter for authentication attempts
 const authRateLimiter = new RateLimiter(5, 300000); // 5 attempts per 5 minutes
@@ -265,6 +266,10 @@ export function Authentication() {
               {mode === 'login' ? 'Create New Account' : 'Back to Login'}
             </button>
           </form>
+
+          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+            <PrivacyPolicy />
+          </div>
         </div>
       </div>
     </div>

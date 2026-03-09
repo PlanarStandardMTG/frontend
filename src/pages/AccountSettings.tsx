@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/useAuth'
 import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa'
 import { ChallongeConnection } from '../components/Challonge/ChallongeConnection'
+import { AccountDeletion } from '../components/AccountDeletion'
+import { PrivacyPolicy } from '../components/PrivacyPolicy'
 import { clearAuthToken } from '../utils/apiSecurity'
 
 export function AccountSettings() {
@@ -40,13 +42,13 @@ export function AccountSettings() {
             </button>
           </div>
 
-          {/* Placeholder for future settings */}
-          <div className="bg-gray-800/50 backdrop-blur-md rounded-lg p-6 border border-gray-700 opacity-50">
-            <h2 className="text-2xl font-semibold mb-4">More Settings Coming Soon</h2>
-            <p className="text-gray-400">
-              Additional account settings and preferences will be available here.
-            </p>
-          </div>
+          {/* Account Deletion */}
+          <AccountDeletion />
+        </div>
+
+        {/* Privacy Policy */}
+        <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+          <PrivacyPolicy />
         </div>
       </div>
     </div>
