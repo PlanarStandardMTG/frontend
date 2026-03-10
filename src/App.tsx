@@ -6,7 +6,7 @@ import { Dashboard } from './pages/Dashboard'
 import { Authentication } from './pages/Authentication'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminRoute } from './components/AdminRoute'
-import { Rules } from './pages/Rules'
+import { Legality } from './pages/Legality'
 import { AdminDashboard } from './pages/AdminDashboard'
 import { AccountSettings } from './pages/AccountSettings'
 import { ChallongeCallback } from './pages/ChallongeCallback'
@@ -27,7 +27,7 @@ function App() {
             <Route path="/account" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
             <Route path="/auth" element={<Authentication />} />
             <Route path="/auth/challonge/callback" element={<ProtectedRoute><ChallongeCallback /></ProtectedRoute>} />
-            <Route path="/rules" element={<Rules />} />
+            <Route path="/legality" element={<Legality />} />
             <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/meta" element={<Meta />} />

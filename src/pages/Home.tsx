@@ -33,7 +33,7 @@ export function Home() {
               Tournaments
             </NavigationButton>
 
-            <NavigationButton to="/rules">
+            <NavigationButton to="/legality">
               Legality
             </NavigationButton>
 

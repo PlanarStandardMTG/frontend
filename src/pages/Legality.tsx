@@ -1,7 +1,7 @@
 import Card from '../components/Card';
 import { NavigationButton } from '../components/NavigationButton';
 
-export function Rules() {
+export function Legality() {
   return (
     <div className="relative min-h-screen text-white">
       <div className="relative z-10 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800">
@@ -9,7 +9,7 @@ export function Rules() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-              Planar Standard Rules
+              Rules & Legality
             </h1>
             <p className="text-lg text-gray-300 max-w-3xl">
               Planar Standard is a rotating Magic: the Gathering format built
@@ -42,12 +42,10 @@ export function Rules() {
             {/* Rotation */}
             <Card title="Rotation Policy">
               <p>
-                Planar Standard is intended to always feature the previous two
-                years of Universe Within sets.
+                Planar Standard is intended to always feature the previous two years of Universe Within sets.
               </p>
               <p>
-                Rotation will coincide with the release of the first set of each
-                year.
+                Rotation will coincide with the release of the first Universes Within set of each year.
               </p>
             </Card>
 
