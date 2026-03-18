@@ -53,8 +53,13 @@ export function Tournaments() {
     }
   };
 
-  const activeTournaments = tournaments.filter(t => t.state !== 'complete');
-  const completedTournaments = tournaments.filter(t => t.state === 'complete');
+  const sortByStartAt = (a: Tournament, b: Tournament) =>
+    new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
+
+  const sortedTournaments = [...tournaments].sort(sortByStartAt);
+
+  const activeTournaments = sortedTournaments.filter(t => t.state !== 'complete');
+  const completedTournaments = sortedTournaments.filter(t => t.state === 'complete');
   
   // Separate user's tournaments
   const myActiveTournaments = activeTournaments.filter(t => t.isParticipant);
