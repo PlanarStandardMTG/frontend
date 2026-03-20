@@ -17,6 +17,25 @@ import { PrivacyPolicy } from '../components/PrivacyPolicy';
 const authRateLimiter = new RateLimiter(5, 300000); // 5 attempts per 5 minutes
 
 export function Authentication() {
+  const isDev = import.meta.env.MODE === 'development'
+
+  if (!isDev) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white p-8">
+        <div className="max-w-md mx-auto">
+          <h1 className="text-4xl font-bold mb-8 text-center">Authentication</h1>
+          
+          <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
+            <div className="text-center mb-6">
+              <p className="text-lg text-gray-300 mb-2">Accounts coming soon!</p>
+              <p className="text-sm text-gray-400">This feature is currently under development.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

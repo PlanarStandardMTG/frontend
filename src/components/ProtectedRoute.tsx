@@ -8,6 +8,11 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isLoggedIn } = useAuth()
   const location = useLocation()
+  const isDev = import.meta.env.MODE === 'development'
+
+  if (!isDev) {
+    return <Navigate to="/" replace />
+  }
 
   if (!isLoggedIn) {
     return <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />

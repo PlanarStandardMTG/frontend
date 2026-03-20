@@ -8,6 +8,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { isLoggedIn, isAdmin } = useAuth()
   const navigate = useNavigate()
+  const isDev = import.meta.env.MODE === 'development'
 
   const handleTitleClick = () => navigate('/')
 
@@ -34,7 +35,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-3">
-            {isLoggedIn && (
+            {isDev && isLoggedIn && (
               <DesktopButton 
                 icon={<FaTachometerAlt />} 
                 label="Dashboard" 
@@ -71,7 +72,7 @@ export function Header() {
               color="cyan" 
             />
             
-            {isAdmin && (
+            {isDev && isAdmin && (
               <DesktopButton 
                 icon={<FaCrown />} 
                 label="Admin" 
@@ -80,7 +81,7 @@ export function Header() {
               />
             )}
             
-            {isLoggedIn ? (
+            {isDev && isLoggedIn ? (
               <DesktopButton 
                 icon={<FaCog />} 
                 label="Account" 
@@ -117,7 +118,7 @@ export function Header() {
               <FaHome /> Home
             </button>
 
-            {isLoggedIn && (
+            {isDev && isLoggedIn && (
               <button
                 onClick={() => { navigate('/dashboard'); setMenuOpen(false) }}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-blue-600 hover:text-white"
@@ -154,7 +155,7 @@ export function Header() {
               <FaProjectDiagram /> Meta
             </button>
 
-            {isAdmin && (
+            {isDev && isAdmin && (
               <button
                 onClick={() => { navigate('/admin'); setMenuOpen(false) }}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-yellow-600 hover:text-white"
@@ -163,7 +164,7 @@ export function Header() {
               </button>
             )}
 
-            {isLoggedIn ? (
+            {isDev && isLoggedIn ? (
               <button
                 onClick={() => { navigate('/account'); setMenuOpen(false) }}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-gray-600 hover:text-white"
@@ -171,12 +172,12 @@ export function Header() {
                 <FaCog /> Account Settings
               </button>
             ) : (
-              <button
-                onClick={() => { navigate('/auth'); setMenuOpen(false) }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-gray-500 text-gray-100 hover:border-gray-300"
-              >
-                <FaSignInAlt /> Login
-              </button>
+              <DesktopButton 
+                icon={<FaSignInAlt />} 
+                label="Login" 
+                onClick={() => navigate('/auth')} 
+                color="green" 
+              />
             )}
           </div>
         </div>
