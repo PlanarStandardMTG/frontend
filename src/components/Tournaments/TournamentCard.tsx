@@ -214,50 +214,48 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
         </div>
       </div>
 
-      {!isCompleted && (
-        <div className="mt-4 pt-4 border-t border-gray-700 space-y-3">
-          {error && (
-            <div className="bg-red-900/50 border border-red-700 rounded-md p-2 text-sm text-red-200">
-              {error}
-            </div>
-          )}
-          
-          <div className="flex items-center justify-between gap-2">
-            <a
-              href={sanitizeURL(`https://challonge.com/${tournament.url}`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
-            >
-              View on Challonge →
-            </a>
-            
-            {tournament.state === 'pending' && (
-              isParticipant ? (
-                <button
-                  onClick={handleLeaveTournament}
-                  // disabled={isLoading}
-                  disabled={true}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
-                >
-                  <FaSignOutAlt />
-                  {isLoading ? 'Leaving...' : 'Leave'}
-                </button>
-              ) : (
-                <button
-                  onClick={handleJoinTournament}
-                  // disabled={isLoading}
-                  disabled={true}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
-                >
-                  <FaSignInAlt />
-                  {isLoading ? 'Joining...' : 'Join'}
-                </button>
-              )
-            )}
+      <div className="mt-4 pt-4 border-t border-gray-700 space-y-3">
+        {error && (
+          <div className="bg-red-900/50 border border-red-700 rounded-md p-2 text-sm text-red-200">
+            {error}
           </div>
+        )}
+        
+        <div className="flex items-center justify-between gap-2">
+          <a
+            href={sanitizeURL(`https://challonge.com/${tournament.url}`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
+          >
+            View on Challonge →
+          </a>
+          
+          {!isCompleted && tournament.state === 'pending' && (
+            isParticipant ? (
+              <button
+                onClick={handleLeaveTournament}
+                // disabled={isLoading}
+                disabled={true}
+                className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+              >
+                <FaSignOutAlt />
+                {isLoading ? 'Leaving...' : 'Leave'}
+              </button>
+            ) : (
+              <button
+                onClick={handleJoinTournament}
+                // disabled={isLoading}
+                disabled={true}
+                className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+              >
+                <FaSignInAlt />
+                {isLoading ? 'Joining...' : 'Join'}
+              </button>
+            )
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
