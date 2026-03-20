@@ -9,7 +9,7 @@ export function Meta() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-              Our Shifting Meta
+              The "Meta"
             </h1>
           </div>
 
@@ -25,23 +25,18 @@ export function Meta() {
               </p>
             </Card>
 
-            {/* Archetype Map */}
-            <Card title="Archetype Map">
-              <p>
-                The interactive archetype map features XXX decks, sorted into XX clusters based on similarities in their card compositions. Decks that share more cards — and therefore likely follow similar strategies — are positioned closer together, while more distinct decks appear further apart. 
-                
-                Colors represent archetypes, node size reflects connectivity to similar decks, and hovering over a deck reveals its full list, performance record, and event information. 
-                
-                The legend to the right can also be interacted with to display only a few decks at the time, for easier identification in the map. Lastly, use the control in the upper right of the window to zoom in and out of the map. 
-                
-                {/* If you want to copy any of these deck lists into Arena or a tabletop simulator of your choice, find them in the Google Drive folder linked below: */}
-              </p>
-              <div className="mt-4 mx-16 text-center">
-                <NavigationButton to="/archetype-map">
-                  Archetype Map
-                </NavigationButton>
-              </div>
-            </Card>
+            {/* Map + Drive Links */}
+            <section className="grid gap-3 sm:grid-cols-3">
+              <NavigationButton href="https://drive.google.com/drive/folders/1_GfHy-c6Orxxbc5p9aZgXoeGLG_o1vb3?usp=drive_link">
+                Season beta
+              </NavigationButton>
+              <NavigationButton href="https://drive.google.com/drive/folders/148ovnHBmpz9sXJz6wumRsrW18pcs5n2F?usp=drive_link">
+                Season I (ongoing)
+              </NavigationButton>
+              <NavigationButton to="/archetype-map">
+                Archetype Map
+              </NavigationButton>
+            </section>
           </div>
 
           {/* Back */}

@@ -2,13 +2,15 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type NavigationButtonProps = {
-  to: string
+  to?: string
+  href?: string
   children: React.ReactNode
   variant?: 'primary' | 'secondary'
 }
 
 export function NavigationButton({
   to,
+  href,
   children,
   variant = 'primary',
 }: NavigationButtonProps) {
@@ -24,12 +26,29 @@ export function NavigationButton({
       'bg-gray-800 hover:bg-gray-700 text-white ring-1 ring-white/20',
   }
 
-  return (
-    <button
-      onClick={() => navigate(to)}
-      className={`${baseClasses} ${variants[variant]}`}
-    >
-      {children}
-    </button>
-  )
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseClasses} ${variants[variant]}`}
+      >
+        {children}
+      </a>
+    )
+  }
+
+  if (to) {
+    return (
+      <button
+        onClick={() => navigate(to)}
+        className={`${baseClasses} ${variants[variant]}`}
+      >
+        {children}
+      </button>
+    )
+  }
+
+  return null
 }

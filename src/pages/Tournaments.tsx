@@ -22,16 +22,11 @@ export function Tournaments() {
       setError(null);
 
       const token = getAuthToken();
-      // if (!token) {
-      //   setError('Authentication required');
-      //   setLoading(false);
-      //   return;
-      // }
 
       const response = await fetch(`${API_BASE_URL}/api/challonge/tournaments`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest',
         },
@@ -57,35 +52,25 @@ export function Tournaments() {
     new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
 
   const sortedTournaments = [...tournaments].sort(sortByStartAt);
+  const activeTournaments = sortedTournaments.filter((t) => t.state !== 'complete');
+  const completedTournaments = sortedTournaments.filter((t) => t.state === 'complete');
 
-  const activeTournaments = sortedTournaments.filter(t => t.state !== 'complete');
-  const completedTournaments = sortedTournaments.filter(t => t.state === 'complete');
-  
-  // Separate user's tournaments
-  const myActiveTournaments = activeTournaments.filter(t => t.isParticipant);
-  const otherActiveTournaments = activeTournaments.filter(t => !t.isParticipant);
-  const myCompletedTournaments = completedTournaments.filter(t => t.isParticipant);
-  const otherCompletedTournaments = completedTournaments.filter(t => !t.isParticipant);
-  
-  // Filter based on view mode
-//   const displayActiveTournaments = showOnlyMyTournaments ? myActiveTournaments : activeTournaments;
-//   const displayCompletedTournaments = showOnlyMyTournaments ? myCompletedTournaments : completedTournaments;
-  
+  const myActiveTournaments = activeTournaments.filter((t) => t.isParticipant);
+  const otherActiveTournaments = activeTournaments.filter((t) => !t.isParticipant);
+  const myCompletedTournaments = completedTournaments.filter((t) => t.isParticipant);
+  const otherCompletedTournaments = completedTournaments.filter((t) => !t.isParticipant);
+
   const hasMyTournaments = myActiveTournaments.length > 0 || myCompletedTournaments.length > 0;
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="flex justify-center items-center mb-4">
-            {/* <FaTrophy className="text-yellow-400 text-5xl mr-4" /> */}
-            <h1 className="text-5xl font-bold text-white">Tournaments</h1>
+    <div className="relative min-h-screen text-white">
+      <div className="relative z-10 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-800">
+        <section className="max-w-5xl mx-auto px-6 py-20">
+          <div className="mb-12">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Tournaments</h1>
+            <p className="text-gray-300 text-lg">View all active and upcoming Planar Standard events</p>
           </div>
-          <p className="text-gray-400 text-lg">
-            View all active and upcoming Planar Standard events
-          </p>
-          
-          {/* View Toggle */}
+
           {hasMyTournaments && !loading && (
             <div className="mt-6 flex justify-center">
               <div className="inline-flex items-center bg-gray-900/75 backdrop-blur-md border border-gray-700 rounded-lg p-1">
@@ -114,142 +99,131 @@ export function Tournaments() {
               </div>
             </div>
           )}
-        </div>
 
-        {loading && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-            <p className="text-gray-400 mt-4">Loading tournaments...</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="bg-red-900/50 border border-red-700 rounded-lg p-6 mb-8">
-            <div className="flex items-center">
-              <FaExclamationTriangle className="text-red-400 mr-3" />
-              <p className="text-red-200">{error}</p>
+          {loading && (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white" />
+              <p className="text-gray-400 mt-4">Loading tournaments...</p>
             </div>
-            <button
-              onClick={fetchTournaments}
-              className="mt-4 px-4 py-2 bg-red-700 hover:bg-red-600 text-white rounded transition-colors"
-            >
-              Try Again
-            </button>
-          </div>
-        )}
+          )}
 
-        {!loading && !error && tournaments.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No tournaments found</p>
-          </div>
-        )}
-        
-        {!loading && !error && showOnlyMyTournaments && !hasMyTournaments && (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">You're not registered for any tournaments yet</p>
-          </div>
-        )}
+          {error && (
+            <div className="bg-red-900/50 border border-red-700 rounded-lg p-6 mb-8">
+              <div className="flex items-center">
+                <FaExclamationTriangle className="text-red-400 mr-3" />
+                <p className="text-red-200">{error}</p>
+              </div>
+              <button
+                onClick={fetchTournaments}
+                className="mt-4 px-4 py-2 bg-red-700 hover:bg-red-600 text-white rounded transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
 
-        {!loading && !error && tournaments.length > 0 && (showOnlyMyTournaments ? hasMyTournaments : true) && (
-          <div className="space-y-12">
-            {/* Show tournaments based on view mode */}
-            {showOnlyMyTournaments ? (
-              <>
-                {/* My Active Tournaments */}
-                {myActiveTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-green-400 mb-2 flex items-center gap-2">
-                      <FaTrophy className="text-green-400" />
-                      My Tournaments
-                    </h2>
-                    <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {myActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
-                    </div>
-                  </div>
-                )}
+          {!loading && !error && tournaments.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">No tournaments found</p>
+            </div>
+          )}
 
-                {/* My Completed Tournaments */}
-                {myCompletedTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-400 mb-2">
-                      My Completed Tournaments
-                    </h2>
-                    <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {myCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <>
-                {/* My Active Tournaments */}
-                {myActiveTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-green-400 mb-2 flex items-center gap-2">
-                      <FaTrophy className="text-green-400" />
-                      My Tournaments
-                    </h2>
-                    <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {myActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
-                    </div>
-                  </div>
-                )}
+          {!loading && !error && showOnlyMyTournaments && !hasMyTournaments && (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">You're not registered for any tournaments yet</p>
+            </div>
+          )}
 
-                {/* Other Active Tournaments */}
-                {otherActiveTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-6">
-                      {myActiveTournaments.length > 0 ? 'Other ' : ''}Active & Upcoming Tournaments
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {otherActiveTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
+          {!loading && !error && tournaments.length > 0 && (showOnlyMyTournaments ? hasMyTournaments : true) && (
+            <div className="space-y-12">
+              {showOnlyMyTournaments ? (
+                <>
+                  {myActiveTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-green-400 mb-2 flex items-center gap-2">
+                        <FaTrophy className="text-green-400" />
+                        My Tournaments
+                      </h2>
+                      <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {myActiveTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* My Completed Tournaments */}
-                {myCompletedTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-400 mb-2">
-                      My Completed Tournaments
-                    </h2>
-                    <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {myCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
+                  {myCompletedTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-400 mb-2">My Completed Tournaments</h2>
+                      <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
+                      <div className="grid grid-cols-1 md:grid-cols=2 lg:grid-cols-3 gap-6">
+                        {myCompletedTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </>
+              ) : (
+                <>
+                  {myActiveTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-green-400 mb-2 flex items-center gap-2">
+                        <FaTrophy className="text-green-400" />
+                        My Tournaments
+                      </h2>
+                      <p className="text-gray-400 mb-6">Tournaments you're registered for</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {myActiveTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-                {/* Other Completed Tournaments */}
-                {otherCompletedTournaments.length > 0 && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-500 mb-6">
-                      {myCompletedTournaments.length > 0 ? 'Other ' : ''}Completed Tournaments
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {otherCompletedTournaments.map((tournament) => (
-                        <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
-                      ))}
+                  {otherActiveTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-white mb-6">
+                        {myActiveTournaments.length > 0 ? 'Other ' : ''}Active & Upcoming Tournaments
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {otherActiveTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        )}
+                  )}
+
+                  {myCompletedTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-400 mb-2">My Completed Tournaments</h2>
+                      <p className="text-gray-500 mb-6">Past tournaments you participated in</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {myCompletedTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {otherCompletedTournaments.length > 0 && (
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-500 mb-6">
+                        {myCompletedTournaments.length > 0 ? 'Other ' : ''}Completed Tournaments
+                      </h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {otherCompletedTournaments.map((tournament) => (
+                          <TournamentCard key={tournament.id} tournament={tournament} onTournamentUpdate={fetchTournaments} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
