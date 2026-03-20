@@ -67,7 +67,7 @@ export function Home() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-6 pb-24 gap-8">
+        {/* <section className="max-w-6xl mx-auto px-6 pb-24 gap-8">
           <div className="bg-gray-900/75 backdrop-blur-md rounded-2xl p-6 shadow-2xl ring-1 ring-white/15 hover:ring-white/25 transition md:col-span-3">
             <h3 className="text-xl font-semibold mb-3">Our Philosophy</h3>
             <p className="text-gray-300">
@@ -77,7 +77,7 @@ export function Home() {
               We want to emphasize that Planar Standard aims to be defined by what it is, rather than what it is not. We believe Universes Beyond can co-exist with Planar Standard side by side. As such, we reject all forms of inappropriate or hateful anti-Universes Beyond sentiments, in our strife to develop and maintain a format where everyone can feel appreciated and included, regardless of one’s take on Universes Beyond.
             </p>
           </div>
-        </section>
+        </section> */}
 
         {/* Community Statement */}
         <section className="max-w-4xl mx-auto px-6 pb-24 text-center">
