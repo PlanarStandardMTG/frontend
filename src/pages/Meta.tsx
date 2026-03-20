@@ -25,14 +25,30 @@ export function Meta() {
               </p>
             </Card>
 
+            <div className="text-lg mb-3 leading-relaxed text-gray-300">
+              <p>
+                Follow these links to see detailed documentation of the meta:
+              </p>
+            </div>
+
             {/* Map + Drive Links */}
-            <section className="grid gap-3 sm:grid-cols-3">
-              <NavigationButton href="https://drive.google.com/drive/folders/1_GfHy-c6Orxxbc5p9aZgXoeGLG_o1vb3?usp=drive_link">
-                Season beta
-              </NavigationButton>
+            <section className="flex flex-wrap justify-center gap-4 mx-10">
               <NavigationButton href="https://drive.google.com/drive/folders/148ovnHBmpz9sXJz6wumRsrW18pcs5n2F?usp=drive_link">
-                Season I (ongoing)
+                Season: 1
               </NavigationButton>
+              <NavigationButton href="https://drive.google.com/drive/folders/1_GfHy-c6Orxxbc5p9aZgXoeGLG_o1vb3?usp=drive_link">
+                Season: beta
+              </NavigationButton>
+            </section>
+
+            <div className="text-lg mb-3 leading-relaxed text-gray-300">
+              <p>
+                Explore the archetype map below to see how different decks relate to each other:
+              </p>
+            </div>
+
+            {/* Map */}
+            <section className="flex flex-wrap justify-center gap-4 mx-10">
               <NavigationButton to="/archetype-map">
                 Archetype Map
               </NavigationButton>
