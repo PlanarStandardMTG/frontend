@@ -29,7 +29,7 @@ export function Footer() {
             <FaRedditAlien className="w-6 h-6" />
           </a>
           <a
-            href="https://www.twitch.tv/planar_standaed_mtg"
+            href="https://www.twitch.tv/planarstandardmtg"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center px-6 py-2 bg-purple-600 hover:bg-purple-700 font-semibold rounded-lg transition-colors"
