@@ -81,14 +81,16 @@ export function Header() {
               />
             )}
             
-            {isDev && isLoggedIn ? (
+            {isDev && isLoggedIn && (
               <DesktopButton 
                 icon={<FaCog />} 
                 label="Account" 
                 onClick={() => navigate('/account')} 
                 color="gray" 
               />
-            ) : (
+            )}
+
+            {isDev && !isLoggedIn && (
               <DesktopButton 
                 icon={<FaSignInAlt />} 
                 label="Login" 
@@ -164,20 +166,22 @@ export function Header() {
               </button>
             )}
 
-            {isDev && isLoggedIn ? (
+            {isDev && isLoggedIn && (
               <button
                 onClick={() => { navigate('/account'); setMenuOpen(false) }}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-gray-600 hover:text-white"
               >
                 <FaCog /> Account Settings
               </button>
-            ) : (
-              <DesktopButton 
-                icon={<FaSignInAlt />} 
-                label="Login" 
-                onClick={() => navigate('/auth')} 
-                color="green" 
-              />
+            )}
+
+            {isDev && !isLoggedIn && (
+              <button
+                onClick={() => { navigate('/auth'); setMenuOpen(false) }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-700 text-gray-100 hover:bg-green-600 hover:text-white"
+              >
+                <FaSignInAlt /> Login
+              </button>
             )}
           </div>
         </div>

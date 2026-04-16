@@ -10,7 +10,7 @@ export function Home() {
       <div className="relative z-10">
         {/* Hero */}
         <section className="max-w-6xl mx-auto px-6 py-24 text-center">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 italic">
             PLANAR STANDARD
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
