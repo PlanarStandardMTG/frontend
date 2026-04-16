@@ -237,7 +237,7 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
                 onClick={handleLeaveTournament}
                 // disabled={isLoading}
                 disabled={true}
-                className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors cursor-not-allowed"
               >
                 <FaSignOutAlt />
                 {isLoading ? 'Leaving...' : 'Leave'}
@@ -247,7 +247,8 @@ export function TournamentCard({ tournament, onTournamentUpdate }: TournamentCar
                 onClick={handleJoinTournament}
                 // disabled={isLoading}
                 disabled={true}
-                className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors disabled:cursor-not-allowed"
+                title="This feature is in progress"
+                className="flex items-center gap-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white text-sm rounded transition-colors cursor-not-allowed"
               >
                 <FaSignInAlt />
                 {isLoading ? 'Joining...' : 'Join'}

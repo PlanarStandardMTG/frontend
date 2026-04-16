@@ -21,3 +21,10 @@ html, body {
 button:hover {
     cursor: pointer;
 }
+
+button:disabled,
+button[disabled],
+button:disabled:hover,
+button[disabled]:hover {
+    cursor: not-allowed;
+}
