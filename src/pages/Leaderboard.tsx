@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Card from '../components/Card'
-import { NavigationButton } from '../components/NavigationButton'
 import { API_BASE_URL } from '../types/Api'
 import { sanitizeText } from '../utils/security'
 import type { LeaderboardEntryDTO, LeaderboardResponseDTO } from '../types/Leaderboard'
