@@ -64,7 +64,7 @@ export function Leaderboard() {
               Check out the top-ranked players in Planar Standard!
             </p>
             <p className="text-lg text-gray-300 max-w-3xl">
-              Rankings are based on ELO ratings calculated from our monthly tournamnets.
+              Rankings are based on ELO ratings calculated from our monthly tournaments.
             </p>
           </div>
 
