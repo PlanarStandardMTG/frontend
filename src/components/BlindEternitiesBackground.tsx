@@ -21,28 +21,53 @@ export function BlindEternitiesBackground() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
+    const STAR_DENSITY = 6000
 
-    resize()
-    window.addEventListener('resize', resize)
-
-    const STAR_COUNT = Math.floor(
-      (window.innerWidth * window.innerHeight) / 6000
-    )
-
-    starsRef.current = Array.from({ length: STAR_COUNT }).map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+    const makeStar = (w: number, h: number): Star => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
       radius: Math.random() * 1.6 + 0.4,
       depth: Math.random() * 0.8 + 0.2,
-
-      // 🌌 ultra-slow drift (scaled by depth)
       vx: (Math.random() - 0.5) * 0.02,
       vy: (Math.random() - 0.5) * 0.02,
-    }))
+    })
+
+    const resize = () => {
+      const oldW = canvas.width
+      const oldH = canvas.height
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+
+      // Rescale existing star positions proportionally
+      if (oldW > 0 && oldH > 0) {
+        const scaleX = canvas.width / oldW
+        const scaleY = canvas.height / oldH
+        for (const star of starsRef.current) {
+          star.x *= scaleX
+          star.y *= scaleY
+        }
+      }
+
+      // Adjust star count to maintain consistent density
+      const targetCount = Math.floor((canvas.width * canvas.height) / STAR_DENSITY)
+      if (starsRef.current.length < targetCount) {
+        const toAdd = targetCount - starsRef.current.length
+        for (let i = 0; i < toAdd; i++) {
+          starsRef.current.push(makeStar(canvas.width, canvas.height))
+        }
+      } else if (starsRef.current.length > targetCount) {
+        starsRef.current.length = targetCount
+      }
+    }
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    const initialCount = Math.floor((canvas.width * canvas.height) / STAR_DENSITY)
+    starsRef.current = Array.from({ length: initialCount }).map(() =>
+      makeStar(canvas.width, canvas.height)
+    )
+
+    window.addEventListener('resize', resize)
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX
