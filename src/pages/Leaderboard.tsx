@@ -171,7 +171,7 @@ export function Leaderboard() {
                         </div>
                         <div className="text-white font-semibold mb-2">{e.username}</div>
                         <div className="text-gray-400 text-sm space-y-1">
-                          <div>Matches: {e.totalMatches}</div>
+                          {/* <div>Matches: {e.totalMatches}</div> */}
                           {/* <div>Wins: {e.totalWins}</div>
                           <div>Losses: {losses}</div> */}
                           <div>Win %: {winRate.toFixed(2)}%</div>
