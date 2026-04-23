@@ -18,6 +18,11 @@ html, body {
     width: 100%;
 }
 
+.ss {
+    font-size: x-large;
+    margin-right: 0.5em;
+}
+
 button:hover {
     cursor: pointer;
 }

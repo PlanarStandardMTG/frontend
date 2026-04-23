@@ -25,16 +25,16 @@ export function Home() {
               </NavigationButton>
             )}
 
-            <NavigationButton to="/leaderboard">
-              Leaderboard
-            </NavigationButton>
-
             <NavigationButton to="/tournaments">
               Tournaments
             </NavigationButton>
 
-            <NavigationButton to="/legality">
-              Legality
+            <NavigationButton to="/leaderboard">
+              Leaderboard
+            </NavigationButton>
+
+            <NavigationButton to="/rules">
+              Rules
             </NavigationButton>
 
             <NavigationButton to="/meta">
