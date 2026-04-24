@@ -125,20 +125,20 @@ export function Leaderboard() {
                 <div className="hidden sm:overflow-x-auto sm:block">
                   <table className="w-full table-auto bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700">
                     <thead>
-                      <tr className="text-left text-gray-300">
+                      <tr className="text-left text-gray-300 bg-gray-700/50">
                         <th className="px-4 py-2">Rank</th>
                         <th className="px-4 py-2">Player</th>
                         <th className="px-4 py-2">ELO</th>
-                        {/* <th className="px-4 py-2">Matches</th>
-                        <th className="px-4 py-2">W</th>
-                        <th className="px-4 py-2">L</th> */}
-                        <th className="px-4 py-2">Win %</th>
+                        {/* <th className="px-4 py-2">Matches</th> */}
+                        {/* <th className="px-4 py-2">W</th> */}
+                        {/* <th className="px-4 py-2">L</th> */}
+                        {/* <th className="px-4 py-2">Win %</th> */}
                       </tr>
                     </thead>
                     <tbody>
                       {entries.map((e, index) => {
                         // const losses = e.totalLosses ?? (e.totalMatches - e.totalWins)
-                        const winRate = (e.totalWins / Math.max(e.totalMatches, 1)) * 100
+                        // const winRate = (e.totalWins / Math.max(e.totalMatches, 1)) * 100
                         return (
                           <tr key={e.id} className="border-t border-gray-700 even:bg-gray-900/40">
                             <td className="px-4 py-2">{index + 1 + (page - 1) * limit}</td>
@@ -147,7 +147,7 @@ export function Leaderboard() {
                             {/* <td className="px-4 py-2">{e.totalMatches}</td>
                             <td className="px-4 py-2">{e.totalWins}</td>
                             <td className="px-4 py-2">{losses}</td> */}
-                            <td className="px-4 py-2">{winRate.toFixed(2)}%</td>
+                            {/* <td className="px-4 py-2">{winRate.toFixed(2)}%</td> */}
                           </tr>
                         )
                       })}
@@ -159,7 +159,7 @@ export function Leaderboard() {
                 <div className="sm:hidden space-y-4">
                   {entries.map((e, index) => {
                     // const losses = e.totalLosses ?? (e.totalMatches - e.totalWins)
-                    const winRate = (e.totalWins / Math.max(e.totalMatches, 1)) * 100
+                    // const winRate = (e.totalWins / Math.max(e.totalMatches, 1)) * 100
                     return (
                       <div
                         key={e.id}
@@ -174,7 +174,7 @@ export function Leaderboard() {
                           {/* <div>Matches: {e.totalMatches}</div> */}
                           {/* <div>Wins: {e.totalWins}</div>
                           <div>Losses: {losses}</div> */}
-                          <div>Win %: {winRate.toFixed(2)}%</div>
+                          {/* <div>Win %: {winRate.toFixed(2)}%</div> */}
                         </div>
                       </div>
                     )
