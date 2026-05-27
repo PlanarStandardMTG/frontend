@@ -13,7 +13,7 @@ export function ArchetypeMap() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-              Our Shifting Meta
+              The Archetype Map
             </h1>
           </div>
 
@@ -21,11 +21,11 @@ export function ArchetypeMap() {
             {/* Archetype Map */}
             <Card title="Archetype Map">
               <p>
-                The interactive archetype map features 137 decks, sorted into 58 clusters based on similarities in their card compositions. Decks that share more cards — and therefore likely follow similar strategies — are positioned closer together, while more distinct decks appear further apart.
-
-                Colors represent archetypes, node size reflects connectivity to similar decks, and hovering over a deck reveals its full list, performance record, and event information.
-
-                The legend to the right can also be interacted with to display only a few decks at the time, for easier identification in the map. Lastly, use the control in the upper right of the window to zoom in and out of the map.
+                This interactive archetype map features 290 decks sorted into 88 clusters based on similarities in their card compositions. 
+                Decks that share more cards, and therefore likely follow similar strategies, are positioned closer together, while more distinct decks appear further apart. 
+                Hovering over a deck reveals its full list, performance record, and event information. 
+                The legend to the right can also be interacted with to display only a few decks at the time, for easier identification in the map. 
+                Lastly, use the control in the upper right hand side of the window to zoom and move around in the map.
               </p>
             </Card>
 
