@@ -17,11 +17,10 @@ export function Meta() {
             {/* Overview */}
             <Card title="Overview">
               <p>
-                Planar Standard can appropriately be called a brewer’s paradise, as games typically last until later turns (5-7) before a win is secured. This leaves lot of rooms to experiment with different strategies which otherwise couldn’t see play in normal Standard. 
-                
-                Before you go brewing an obscure combo deck, however, be aware that aggressive decks also exist which seeks to prey on those who might underestimate the still competitive environment – both RDW (Red Deck Wins), traditional burn, and green Stompy decks will need to be dealt with in a timely manner. 
-                
-                If your flavor is grindy midrange value piles or more controlling archetypes, mono black or Ugin shells are more than happy to welcome you to their abodes.
+                Planar Standard is largely an unsolved format, where new deck strategies pop up from week to week. 
+                On average, games last until later turns (turns 6-8) but can also go faster or slower depending on specific match-ups. 
+                This leaves a lot of room to experiment with different strategies which otherwise couldn't see play in regular Standard. 
+                Both aggro and control decks are viable, with plenty of additional sub-archetypes.
               </p>
             </Card>
 
@@ -33,11 +32,8 @@ export function Meta() {
 
             {/* Map + Drive Links */}
             <section className="flex flex-wrap justify-center gap-4 mx-10">
-              <NavigationButton href="https://drive.google.com/drive/folders/148ovnHBmpz9sXJz6wumRsrW18pcs5n2F?usp=drive_link">
-                Season: 1
-              </NavigationButton>
-              <NavigationButton href="https://drive.google.com/drive/folders/1_GfHy-c6Orxxbc5p9aZgXoeGLG_o1vb3?usp=drive_link">
-                Season: beta
+              <NavigationButton href="https://drive.google.com/file/d/1m17hWxGL93RzRZQr3BcgTtHkyILmk9CK/view">
+                Season I (Lorwyn Eclipsed/Jan - Apr 2026)
               </NavigationButton>
             </section>
 
