@@ -34,7 +34,7 @@ export function ArchetypeMap() {
               onTouchMove={handleTouchMove}
             >
               <iframe
-                src="/InteractiveArchetypeMap.html"
+                src="/InteractiveArchetypeMap_Season1.html"
                 className="w-full h-[80vh] sm:h-[75vh] border-0"
                 title="Interactive Archetype Map"
               />
