@@ -1,34 +1,19 @@
-# Planar Standard Frontend
-This repository contains the frontend code for the Planar Standard project. It is built using modern web technologies to provide a seamless user experience.
+# Planar Standard Events — UI
 
-## Features
-- Responsive design for various devices
-- User-friendly interface
-- Integration with backend services
+The event manager's front end: organizers run events, players register, report results and follow
+pairings and standings. Signs in through [planarstandard.com](https://www.planarstandard.com).
 
-## Backend API Endpoints
-### Authentication
-- Register: `POST /api/auth/register`
-  - Request Body:
-    - `email`: string
-    - `password`: string
-  - Response:
-    - `userId`: string
-    - `email`: string
-- Login: `POST /api/auth/login`
-  - Request Body:
-    - `email`: string
-    - `password`: string
-  - Response:
-    - `token`: string
-- Get User Profile: `GET /api/users/me`
-  - Headers:
-    - `Authorization`: Bearer token
-  - Response:
-    - `userId`: string
+- **The plan and backlog** live with the API: [PlanarStandardMTG/backend](https://github.com/PlanarStandardMTG/backend)
+  (`event-manager-plan.md`, `backlog.md`)
+- **The old site:** the [`legacy`](https://github.com/PlanarStandardMTG/frontend/tree/legacy) branch
 
-## Tables
-| Header 1 | Header 2 | Header 3 |
-|---|---|---|
-| Row 1, Col 1 | Row 1, Col 2 | Row 1, Col 3 |
-| Row 2, Col 1 | Row 2, Col 2 | Row 2, Col 3 |
+## Today
+
+A placeholder page that checks the API's health. A push to `main` deploys to Vercel.
+
+```bash
+pnpm install
+cp .env.example .env.local   # VITE_API_URL
+pnpm dev                     # http://localhost:5173
+pnpm lint && pnpm build
+```

@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "FunctionTwo";
+  src: url("./fonts/FUNCTIONTWO-XBOLD.TTF") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@theme {
+  --font-display: "FunctionTwo", sans-serif;
+}
